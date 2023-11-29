@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Divider,
@@ -10,71 +10,104 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
+  ListItemButton,
+  ListItemText,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { pink } from "@mui/material/colors";
-const haircareFilters = ["All", "shampoo", "conditioner", "hair mask"];
+
+import { useDispatch, useSelector } from "react-redux";
+import filtersSlice from "../../../reducers/filtersSlice";
+import {
+  searchCategorySelector,
+  searchTypeSelector,
+} from "../../../redux-toolkit/selectors";
+
+const haircareFilters = ["hairmask", "shampoo", "conditioner"];
 const Haircare = () => {
-  const [selectedValue, setSelectedValue] = React.useState("a");
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
-  const controlProps = (item) => ({
-    checked: selectedValue === item,
-    onChange: handleChange,
-    value: item,
-    name: "color-radio-button-demo",
-    inputProps: { "aria-label": item },
-  });
+  const dispatch = useDispatch();
+  const [buttonValue, setButtonValue] = useState("haircare");
+  // const { category, type } = props;
+  const type = useSelector(searchTypeSelector);
+  const category = useSelector(searchCategorySelector);
   return (
     <Box>
-      <Accordion>
+      <Accordion elevation={0}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
+          sx={{
+            borderTop: "1px solid #ccc",
+            py: 0,
+            pl: 0,
+            my: 0,
+          }}
         >
-          <Typography
+          <Button
+            value="haircare"
             sx={{
-              color: "#242424",
-              fontWeight: "bold",
+              width: "100%",
+              pl: 2,
+              py: 0,
+              my: 0,
+              fontSize: "16px",
+              color: buttonValue === type ? "red" : "#242424",
+              fontWeight: buttonValue === type ? 800 : "bold",
+              justifyContent: "flex-start",
+              textTransform: "capitalize",
+              "&:hover": {
+                backgroundColor: "#fff",
+                color: "red",
+              },
+            }}
+            onClick={(e) => {
+              dispatch(
+                filtersSlice.actions.setSearchType(e.currentTarget.value)
+              );
             }}
           >
             Haircare
-          </Typography>
+          </Button>
         </AccordionSummary>
-        <Divider />
-        <AccordionDetails>
-          <FormControl
-            sx={{ marginLeft: "10px", fontWeight: "10px" }}
-            onChange={(e) => console.log(e.target.value)}
-          >
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="female"
-              name="radio-buttons-group"
+        {/* <Divider /> */}
+
+        <AccordionDetails
+          sx={{
+            // width: "100%",
+            // marginTop: 0,
+            py: 0,
+            pr: 5,
+            // minHeight: 32,
+          }}
+        >
+          {haircareFilters.map((item, index) => (
+            <ListItemButton
+              key={index}
+              sx={{
+                // width: "100%",
+                py: 0,
+                minHeight: 32,
+                backgroundColor: item === category ? "#fdecee" : "inherit",
+              }}
+              onClick={() => {
+                dispatch(filtersSlice.actions.setSearchCategory(item));
+                // console.log(item);
+              }}
             >
-              {haircareFilters.map((haircare, index) => (
-                <FormControlLabel
-                  key={index}
-                  value={haircare}
-                  control={
-                    <Radio
-                      {...controlProps(haircare)}
-                      sx={{
-                        color: pink[800],
-                        "&.Mui-checked": {
-                          color: pink[600],
-                        },
-                      }}
-                    />
-                  }
-                  label={haircare.charAt(0).toUpperCase() + haircare.slice(1)}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
+              {/* <ListItemIcon sx={{ color: "inherit" }}>{item.icon}</ListItemIcon> */}
+              <ListItemText
+                primary={item}
+                primaryTypographyProps={{
+                  color: "#ad1357",
+                  fontSize: 15,
+                  textTransform: "capitalize",
+                  fontWeight: item === category ? 800 : 500,
+                }}
+              />
+            </ListItemButton>
+          ))}
         </AccordionDetails>
+        {/* <Divider /> */}
       </Accordion>
     </Box>
   );

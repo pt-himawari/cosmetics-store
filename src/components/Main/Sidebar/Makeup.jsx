@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Divider,
@@ -10,75 +10,104 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
+  Button,
+  ListItemButton,
+  ListItemText,
 } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useDispatch, useSelector } from "react-redux";
+import filtersSlice from "../../../reducers/filtersSlice";
+import {
+  searchCategorySelector,
+  searchTypeSelector,
+} from "../../../redux-toolkit/selectors";
+const makeupFilters = ["lip", "eye", "face", "accessories"];
 
-const makeupFilters = ["All", "face", "eye", "lip", "accessories"];
+const Makeup = (props) => {
+  const type = useSelector(searchTypeSelector);
+  const category = useSelector(searchCategorySelector);
+  const dispatch = useDispatch();
+  const [buttonValue, setButtonValue] = useState("makeup");
 
-const Makeup = () => {
-  const [selectedValue, setSelectedValue] = React.useState("a");
-
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
-
-  const controlProps = (item) => ({
-    checked: selectedValue === item,
-    onChange: handleChange,
-    value: item,
-    name: "color-radio-button-demo",
-    inputProps: { "aria-label": item },
-  });
   return (
     <Box>
-      <Accordion defaultExpanded>
+      <Accordion elevation={0}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
+          // aria-controls="panel1a-content"
+          // id="panel1a-header"
+          sx={{
+            borderTop: "1px solid #ccc",
+            py: 0,
+            pl: 0,
+            my: 0,
+          }}
         >
-          <Typography
+          <Button
+            value="makeup"
             sx={{
+              width: "100%",
+              pl: 2,
+              py: 0,
+              my: 0,
+              fontSize: "16px",
               color: "#242424",
               fontWeight: "bold",
+              justifyContent: "flex-start",
+              textTransform: "capitalize",
+              color: buttonValue === type ? "red" : "#242424",
+              fontWeight: buttonValue === type ? 800 : "bold",
+            }}
+            onClick={(e) => {
+              dispatch(
+                filtersSlice.actions.setSearchType(e.currentTarget.value)
+              );
             }}
           >
             Makeup
-          </Typography>
+          </Button>
         </AccordionSummary>
-        <Divider />
-        <AccordionDetails>
-          <FormControl
-            sx={{ marginLeft: "10px", fontWeight: "10px" }}
-            onChange={(e) => console.log(e.target.value)}
-          >
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="female"
-              name="radio-buttons-group"
+        {/* <Divider /> */}
+
+        <AccordionDetails
+          sx={{
+            // width: "100%",
+            // marginTop: 0,
+            py: 0,
+            pr: 5,
+            // minHeight: 32,
+          }}
+        >
+          {makeupFilters.map((item, index) => (
+            <ListItemButton
+              key={index}
+              sx={{
+                // width: "100%",
+                py: 0,
+                minHeight: 32,
+                // backgroundColor: "#fdecee",
+                backgroundColor: item === category ? "#fdecee" : "inherit",
+              }}
+              onClick={() => {
+                dispatch(filtersSlice.actions.setSearchCategory(item));
+                // console.log(item);
+              }}
             >
-              {makeupFilters.map((makeup, index) => (
-                <FormControlLabel
-                  key={index}
-                  value={makeup}
-                  control={
-                    <Radio
-                      {...controlProps(makeup)}
-                      sx={{
-                        color: pink[800],
-                        "&.Mui-checked": {
-                          color: pink[600],
-                        },
-                      }}
-                    />
-                  }
-                  label={makeup.charAt(0).toUpperCase() + makeup.slice(1)}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
+              {/* <ListItemIcon sx={{ color: "inherit" }}>{item.icon}</ListItemIcon> */}
+              <ListItemText
+                primary={item}
+                primaryTypographyProps={{
+                  color: "#ad1357",
+                  fontSize: 15,
+                  fontWeight: item === category ? 800 : 500,
+                  textTransform: "capitalize",
+                }}
+              />
+            </ListItemButton>
+          ))}
         </AccordionDetails>
+        {/* <Divider /> */}
       </Accordion>
     </Box>
   );

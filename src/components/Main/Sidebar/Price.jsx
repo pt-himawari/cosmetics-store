@@ -14,6 +14,9 @@ import {
 import { pink } from "@mui/material/colors";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
+import { useDispatch, useSelector } from "react-redux";
+import filtersSlice from "../../../reducers/filtersSlice";
+
 const prices = [
   {
     value: "0,0",
@@ -50,13 +53,20 @@ const Price = () => {
     name: "color-radio-button-demo",
     inputProps: { "aria-label": item },
   });
+
+  const dispatch = useDispatch();
+  // const currenPrice = useSelector(priceSelector);
+
   return (
     <Box>
-      <Accordion defaultExpanded>
+      <Accordion elevation={0}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+          sx={{
+            borderTop: "1px solid #ccc",
+          }}
         >
           <Typography
             sx={{
@@ -67,11 +77,13 @@ const Price = () => {
             Price
           </Typography>
         </AccordionSummary>
-        <Divider />
+
         <AccordionDetails>
           <FormControl
-            sx={{ marginLeft: "10px", fontWeight: "10px" }}
-            onChange={(e) => console.log(e.target.value)}
+            sx={{ marginLeft: "10px", fontWeight: "5px" }}
+            onChange={(e) => {
+              dispatch(filtersSlice.actions.setSearchPrice(e.target.value));
+            }}
           >
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
@@ -86,6 +98,7 @@ const Price = () => {
                     <Radio
                       {...controlProps(price.value)}
                       sx={{
+                        fontSize: "10px",
                         color: pink[800],
                         "&.Mui-checked": {
                           color: pink[600],

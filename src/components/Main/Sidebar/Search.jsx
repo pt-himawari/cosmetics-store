@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import filtersSlice from "../../../reducers/filtersSlice";
 
 const Search = () => {
+  const dispatch = useDispatch();
+  const [searchText, setSearchText] = useState("");
+
   return (
     <Box sx={{ padding: "15px 8px 15px 15px" }}>
       <Typography
@@ -16,17 +21,25 @@ const Search = () => {
       </Typography>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <TextField
-          id="search-bar"
-          variant="outlined"
+          error
+          id="outlined-error"
           size="small"
-          placeholder="search..."
-          color="secondary"
+          label="search"
           sx={{
             flex: 1,
             marginRight: "4px",
           }}
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
         />
-        <Button variant="contained" color="secondary" size="large">
+        <Button
+          variant="contained"
+          color="error"
+          size="large"
+          onClick={() => {
+            dispatch(filtersSlice.actions.setSearchText(searchText));
+          }}
+        >
           <SearchIcon />
         </Button>
       </Box>

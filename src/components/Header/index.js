@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Container, Stack } from "../MuiComponents";
+import { AppBar, Container, Stack } from "@mui/material";
 import Cart from "./Cart";
 import Logo from "./Logo";
 import NavBar from "./NavBar";
@@ -18,7 +18,7 @@ const Header = () => {
         <Container>
           <Stack
             alignItems="center"
-            sx={{ height: "60px", paddingLeft: "80px" }}
+            sx={{ height: "60px", paddingLeft: "10px" }}
             direction="row"
             justifyContent="space-between"
           >

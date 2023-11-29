@@ -19,18 +19,9 @@ const NavBar = () => {
             display: "block",
             fontWeight: "normal",
             fontSize: "16px",
-
-            // "&:hover": {
-            //   borderColor: "black",
-            //   color: "red",
-            //   fontWeight: "bold",
-            // },
-            // backgroundColor:
-            // activePage === page.value ? "red" : "transparent",
           }}
           component={Link}
           to={page.value}
-          // onClick={() => handleClick(page.value)}
         >
           {page.label}
         </Button>
