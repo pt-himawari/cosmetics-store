@@ -1,22 +1,14 @@
-import React, { useState } from "react";
 import {
-  Box,
-  FormControlLabel,
-  RadioGroup,
-  Typography,
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Divider,
-  FormControl,
-  Radio,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
+  Box,
   Button,
+  ListItemButton,
+  ListItemText,
 } from "@mui/material";
+import React from "react";
 
-import { pink } from "@mui/material/colors";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useDispatch, useSelector } from "react-redux";
 import filtersSlice from "../../../reducers/filtersSlice";
@@ -30,14 +22,22 @@ const Skincare = () => {
   const dispatch = useDispatch();
   const type = useSelector(searchTypeSelector);
   const category = useSelector(searchCategorySelector);
-  const [buttonValue, setButtonValue] = useState("skincare");
+  const buttonValue = "skincare";
+
   // const { category, type } = props;
 
   return (
     <Box>
       <Accordion defaultExpanded elevation={0}>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={
+            <ExpandMoreIcon
+              sx={{
+                color: buttonValue === type ? "#CC4343" : "#242424",
+                fontWeight: buttonValue === type ? 800 : "bold",
+              }}
+            />
+          }
           sx={{
             borderTop: "1px solid #ccc",
             py: 0,
@@ -53,7 +53,7 @@ const Skincare = () => {
               py: 0,
               my: 0,
               fontSize: "16px",
-              color: buttonValue === type ? "red" : "#242424",
+              color: buttonValue === type ? "#CC4343" : "#242424",
               fontWeight: buttonValue === type ? 800 : "bold",
               justifyContent: "flex-start",
               textTransform: "capitalize",
@@ -86,9 +86,10 @@ const Skincare = () => {
                 // width: "100%",
                 py: 0,
                 minHeight: 32,
-                backgroundColor: item === category ? "#fdecee" : "inherit",
+                // backgroundColor: item === category ? "#fdecee" : "inherit",
               }}
               onClick={() => {
+                dispatch(filtersSlice.actions.setSearchType(buttonValue));
                 dispatch(filtersSlice.actions.setSearchCategory(item));
                 // console.log(item);
               }}
@@ -97,10 +98,15 @@ const Skincare = () => {
               <ListItemText
                 primary={item}
                 primaryTypographyProps={{
-                  color: "#ad1357",
+                  // color: "#242424",
+                  color: item === category ? "#CC4343" : "#242424",
                   fontSize: 15,
-                  fontWeight: item === category ? 800 : 500,
+                  fontWeight: item === category ? 700 : 500,
                   textTransform: "capitalize",
+                  sx: {
+                    // transition: "color 0.3s ease, font-weight 0.1s ease", // Thêm dòng này
+                    transition: "font-weight 0.3s ease",
+                  },
                 }}
               />
             </ListItemButton>

@@ -15,9 +15,11 @@ const filtersSlice = createSlice({
     },
     setSearchCategory: (state, action) => {
       state.category = action.payload;
+      // state.type = "All";
     },
     setSearchType: (state, action) => {
       state.type = action.payload;
+      state.category = "All";
     },
     setSearchPrice: (state, action) => {
       state.price = action.payload;

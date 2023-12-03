@@ -18,7 +18,6 @@ const brandFilters = [
   "MAC",
   "BOBBI",
   "AVEDA",
-
   "BUMBLE",
   "ORIGINS",
   "CLINIQUE",
@@ -58,7 +57,6 @@ const Brands = () => {
               fontWeight: "bold",
               justifyContent: "flex-start",
               textTransform: "capitalize",
-              color: "#242424",
             }}
           >
             Brands

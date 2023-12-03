@@ -1,40 +1,136 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const cartSlice = createSlice({
+const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    cartItems: [],
+    cartInfo: {
+      subTotal: 0,
+      shipping: 20,
+      total: 0,
+      status: "draft",
+    },
+    cartDetails: [],
+    customerInfo: {},
   },
   reducers: {
-    addToCart: (state, action) => {
-      const item = state.cartItems.find((p) => p.id === action.payload.id);
-      if (item) {
-        item.quantity++;
-        item.attributes.price = item.oneQuantityPrice * item.quantity;
+    addCart: (state, action) => {
+      let cartItem = state.cartDetails?.find(
+        (item) => item.id === action?.payload?.id
+      );
+
+      if (cartItem?.id) {
+        cartItem.quantity = Number(cartItem.quantity) + 1;
+        cartItem.amount = Number(cartItem.quantity * cartItem.currentPrice);
+        // state.cartInfo.total =
       } else {
-        state.cartItems.push({ ...action.payload, quantity: 1 });
+        state.cartDetails.push({
+          ...action.payload,
+          quantity: 1,
+          amount: action?.payload?.currentPrice,
+        });
+      }
+
+      let newSubTotal = state.cartDetails.reduce(
+        (preValue, curValue) =>
+          preValue + curValue.currentPrice * curValue.quantity,
+        0
+      );
+      state.cartInfo.subTotal = newSubTotal;
+      state.cartInfo.total = newSubTotal + state.cartInfo.shipping;
+    },
+
+    incrementQuantity: (state, action) => {
+      let cartItem = state.cartDetails?.find(
+        (item) => item.id === action?.payload?.id
+      );
+      cartItem.quantity = Number(cartItem.quantity) + 1;
+      cartItem.amount = Number(cartItem.quantity * cartItem.currentPrice);
+      let newSubTotal = state.cartDetails.reduce(
+        (preValue, curValue) =>
+          preValue + curValue.currentPrice * curValue.quantity,
+        0
+      );
+      state.cartInfo.subTotal = newSubTotal;
+      state.cartInfo.total = newSubTotal + state.cartInfo.shipping;
+    },
+    decrementQuantity: (state, action) => {
+      let cartItem = state.cartDetails?.find(
+        (item) => item.id === action?.payload?.id
+      );
+      if (cartItem.quantity > 1) {
+        cartItem.quantity = Number(cartItem.quantity) - 1;
+        cartItem.amount = Number(cartItem.quantity * cartItem.currentPrice);
+        let newSubTotal = state.cartDetails.reduce(
+          (preValue, curValue) =>
+            preValue + curValue.currentPrice * curValue.quantity,
+          0
+        );
+        state.cartInfo.subTotal = newSubTotal;
+        state.cartInfo.total = newSubTotal + state.cartInfo.shipping;
       }
     },
-    updateCart: (state, action) => {
-      state.cartItems = state.cartItems.map((p) => {
-        if (p.id === action.payload.id) {
-          if (action.payload.key === "quantity") {
-            p.attributes.price = p.oneQuantityPrice * action.payload.val;
-          }
-          return { ...p, [action.payload.key]: action.payload.val };
-        }
-        return p;
-      });
-    },
-    removeFromCart: (state, action) => {
-      state.cartItems = state.cartItems.filter(
-        (p) => p.id !== action.payload.id
+    removeCartItem: (state, action) => {
+      state.cartDetails = state.cartDetails.filter(
+        (item) => item.id !== action.payload.id
       );
+      let newSubTotal = state.cartDetails.reduce(
+        (preValue, curValue) =>
+          preValue + curValue.currentPrice * curValue.quantity,
+        0
+      );
+      state.cartInfo.subTotal = newSubTotal;
+      state.cartInfo.total = newSubTotal + state.cartInfo.shipping;
     },
+
+    saveCustomer: (state, action) => {
+      state.customerInfo = {
+        ...state.customerInfo,
+        ...action.payload,
+      };
+    },
+    checkoutCart: (state, action) => {
+      state.cartDetails = [];
+      state.cartInfo = {
+        subTotal: 0,
+        shipping: 0,
+        total: 0,
+        status: "draft",
+      };
+      state.customerInfo = {};
+    },
+  },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(checkoutCartThunkAction.pending, (state, action) => {})
+      .addCase(checkoutCartThunkAction.fulfilled, (state, action) => {
+        state.cartInfo = {
+          subTotal: 0,
+          shipping: 0,
+          total: 0,
+          status: "draft",
+        };
+        state.cartDetails = [];
+        state.customerInfo = {};
+      });
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { addToCart, updateCart, removeFromCart } = cartSlice.actions;
-
-export default cartSlice.reducer;
+export const checkoutCartThunkAction = createAsyncThunk(
+  "cart/checkoutThunkAction",
+  async (data) => {
+    let orderRes = await fetch(
+      "https://json-server-psi-three.vercel.app/orderList",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    let result = await orderRes.json();
+    return result;
+  }
+);
+export default cartSlice;

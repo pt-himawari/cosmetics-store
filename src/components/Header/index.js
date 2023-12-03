@@ -1,6 +1,6 @@
 import React from "react";
 import { AppBar, Container, Stack } from "@mui/material";
-import Cart from "./Cart";
+import Cart from "./CartIcon";
 import Logo from "./Logo";
 import NavBar from "./NavBar";
 import User from "./User";

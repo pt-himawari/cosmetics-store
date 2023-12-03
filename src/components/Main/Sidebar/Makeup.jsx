@@ -1,21 +1,14 @@
-import React, { useState } from "react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
-  Box,
-  Divider,
-  Typography,
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
+  Box,
   Button,
   ListItemButton,
   ListItemText,
 } from "@mui/material";
-import { pink } from "@mui/material/colors";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import filtersSlice from "../../../reducers/filtersSlice";
 import {
@@ -28,13 +21,22 @@ const Makeup = (props) => {
   const type = useSelector(searchTypeSelector);
   const category = useSelector(searchCategorySelector);
   const dispatch = useDispatch();
-  const [buttonValue, setButtonValue] = useState("makeup");
+  const buttonValue = "makeup";
+
+  // const [buttonValue, setButtonValue] = useState();
 
   return (
     <Box>
       <Accordion elevation={0}>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={
+            <ExpandMoreIcon
+              sx={{
+                color: buttonValue === type ? "#CC4343" : "#242424",
+                fontWeight: buttonValue === type ? 800 : "bold",
+              }}
+            />
+          }
           // aria-controls="panel1a-content"
           // id="panel1a-header"
           sx={{
@@ -52,11 +54,10 @@ const Makeup = (props) => {
               py: 0,
               my: 0,
               fontSize: "16px",
-              color: "#242424",
-              fontWeight: "bold",
+
               justifyContent: "flex-start",
               textTransform: "capitalize",
-              color: buttonValue === type ? "red" : "#242424",
+              color: buttonValue === type ? "#CC4343" : "#242424",
               fontWeight: buttonValue === type ? 800 : "bold",
             }}
             onClick={(e) => {
@@ -87,9 +88,11 @@ const Makeup = (props) => {
                 py: 0,
                 minHeight: 32,
                 // backgroundColor: "#fdecee",
-                backgroundColor: item === category ? "#fdecee" : "inherit",
+                // backgroundColor: item === category ? "#fdecee" : "inherit",
               }}
               onClick={() => {
+                dispatch(filtersSlice.actions.setSearchType(buttonValue));
+
                 dispatch(filtersSlice.actions.setSearchCategory(item));
                 // console.log(item);
               }}
@@ -98,9 +101,11 @@ const Makeup = (props) => {
               <ListItemText
                 primary={item}
                 primaryTypographyProps={{
-                  color: "#ad1357",
+                  // color: "#242424",
                   fontSize: 15,
-                  fontWeight: item === category ? 800 : 500,
+                  color: item === category ? "#CC4343" : "#242424",
+
+                  fontWeight: item === category ? 700 : 500,
                   textTransform: "capitalize",
                 }}
               />

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import filtersSlice from "../../../reducers/filtersSlice";
 
 const Search = () => {

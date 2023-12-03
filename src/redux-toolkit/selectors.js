@@ -1,11 +1,12 @@
-import React from "react";
 import { createSelector } from "@reduxjs/toolkit";
-export const cosmeticsListSelector = (state) => state.cosmeticsList.cosmetics;
 export const searchTextSelector = (state) => state.filters.searchText;
 export const searchCategorySelector = (state) => state.filters.category;
 export const searchTypeSelector = (state) => state.filters.type;
 export const searchPriceSelector = (state) => state.filters.price;
 export const searchBrandSelector = (state) => state.filters.brand;
+export const cosmeticsListSelector = (state) => state.cosmeticsList.cosmetics;
+export const cartSelector = (state) => state.cart;
+export const orderListSelector = (state) => state.orders;
 
 export const filtersCosmeticsSelector = createSelector(
   cosmeticsListSelector,

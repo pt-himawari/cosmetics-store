@@ -1,23 +1,31 @@
-import React from "react";
-import {
-  Box,
-  Button,
-  Grid,
-  Stack,
-  Typography,
-  Card,
-  CardActions,
-  CardContent,
-  Rating,
-  CardHeader,
-  CardMedia,
-  IconButton,
-} from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import StarIcon from "@mui/icons-material/Star";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Grid,
+  IconButton,
+  Rating,
+  Stack,
+  Typography,
+  Alert,
+  Snackbar,
+} from "@mui/material";
+import React, { useState } from "react";
+
+import { useDispatch } from "react-redux";
+import cartSlice from "../../../reducers/cartSlice";
+
 const Product = ({ product }) => {
   const { name, image, originalPrice, currentPrice, star, brand } = product;
+  const dispatch = useDispatch();
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   return (
     <Grid item xs={6} md={4}>
       {/* San pham */}
@@ -46,7 +54,6 @@ const Product = ({ product }) => {
           sx={{
             height: "155px",
             width: "auto",
-
             objectFit: "contain",
             margin: "auto",
           }}
@@ -134,6 +141,10 @@ const Product = ({ product }) => {
                     backgroundColor: "#CC4343",
                   },
                 }}
+                onClick={() => {
+                  dispatch(cartSlice.actions.addCart(product));
+                  setOpenSnackbar(true);
+                }}
               >
                 <AddShoppingCartIcon />
               </Button>
@@ -141,7 +152,25 @@ const Product = ({ product }) => {
           </CardActions>
         </CardContent>
       </Card>
-      {/* </Box> */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        sx={{ marginTop: "100px" }} // Add this line
+      >
+        <Alert
+          onClose={() => setOpenSnackbar(false)}
+          // severity="success"
+          variant="filled"
+          sx={{
+            width: "100%",
+            backgroundColor: "#009432",
+          }}
+        >
+          Product added to cart successfully!
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };

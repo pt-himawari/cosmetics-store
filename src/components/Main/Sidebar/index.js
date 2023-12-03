@@ -33,7 +33,7 @@ const Sidebar = () => {
             py: 1,
             px: 2,
             fontSize: "16px",
-            color: category === "All" ? "red" : "black",
+            color: category === "All" ? "#CC4343" : "black",
 
             fontWeight: "bold",
             borderTop: "1px solid #ccc",

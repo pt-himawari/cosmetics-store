@@ -8,6 +8,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -18,6 +19,8 @@ const User = () => {
     <Box sx={{}}>
       <Tooltip title="Open settings">
         <IconButton
+          component={Link}
+          to={"/dashboard"}
           onClick={(event) => setAnchorElUser(event.currentTarget)}
           sx={{ p: 0 }}
         >

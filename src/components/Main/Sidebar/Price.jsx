@@ -1,20 +1,19 @@
-import React, { useState } from "react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
-  Box,
-  Divider,
-  Typography,
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   FormControl,
   FormControlLabel,
   Radio,
   RadioGroup,
+  Typography,
 } from "@mui/material";
 import { pink } from "@mui/material/colors";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import React, { useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import filtersSlice from "../../../reducers/filtersSlice";
 
 const prices = [

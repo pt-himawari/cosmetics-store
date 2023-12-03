@@ -1,5 +1,9 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import {
   IconButton,
   Box,
@@ -10,6 +14,7 @@ import {
   Typography,
   styled,
 } from "@mui/material";
+import { cartSelector } from "../../redux-toolkit/selectors";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -22,16 +27,25 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const Cart = () => {
   const [cartMenuAnchor, setCartMenuAnchor] = useState("");
+  const { cartDetails } = useSelector(cartSelector);
+  const totalQuantity = cartDetails.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue.quantity;
+  }, 0);
   return (
     <Box>
       <Tooltip>
         {/* icon cart */}
         <IconButton
           aria-label="cart"
-          onClick={(event) => setCartMenuAnchor(event.currentTarget)}
+          component={Link}
+          to={"/cartpage"}
+          onClick={(event) => {
+            setCartMenuAnchor(event.currentTarget);
+          }}
         >
-          <StyledBadge badgeContent={4} color="secondary">
-            <ShoppingCartIcon />
+          <StyledBadge badgeContent={totalQuantity} color="error">
+            <ShoppingCartOutlinedIcon color="error" />
+            {/* <ShoppingCartIcon /> */}
           </StyledBadge>
         </IconButton>
         {/*  */}

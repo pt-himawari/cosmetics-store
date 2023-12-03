@@ -1,21 +1,14 @@
-import React, { useState } from "react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
-  Box,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Typography,
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Button,
   ListItemButton,
   ListItemText,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { pink } from "@mui/material/colors";
+import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import filtersSlice from "../../../reducers/filtersSlice";
@@ -27,7 +20,8 @@ import {
 const haircareFilters = ["hairmask", "shampoo", "conditioner"];
 const Haircare = () => {
   const dispatch = useDispatch();
-  const [buttonValue, setButtonValue] = useState("haircare");
+  const buttonValue = "haircare";
+
   // const { category, type } = props;
   const type = useSelector(searchTypeSelector);
   const category = useSelector(searchCategorySelector);
@@ -35,7 +29,14 @@ const Haircare = () => {
     <Box>
       <Accordion elevation={0}>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={
+            <ExpandMoreIcon
+              sx={{
+                color: buttonValue === type ? "#CC4343" : "#242424",
+                fontWeight: buttonValue === type ? 800 : "bold",
+              }}
+            />
+          }
           sx={{
             borderTop: "1px solid #ccc",
             py: 0,
@@ -51,7 +52,8 @@ const Haircare = () => {
               py: 0,
               my: 0,
               fontSize: "16px",
-              color: buttonValue === type ? "red" : "#242424",
+              color: buttonValue === type ? "#CC4343" : "#242424",
+
               fontWeight: buttonValue === type ? 800 : "bold",
               justifyContent: "flex-start",
               textTransform: "capitalize",
@@ -87,9 +89,11 @@ const Haircare = () => {
                 // width: "100%",
                 py: 0,
                 minHeight: 32,
-                backgroundColor: item === category ? "#fdecee" : "inherit",
+                // backgroundColor: item === category ? "#fdecee" : "inherit",
               }}
               onClick={() => {
+                dispatch(filtersSlice.actions.setSearchType(buttonValue));
+
                 dispatch(filtersSlice.actions.setSearchCategory(item));
                 // console.log(item);
               }}
@@ -98,10 +102,12 @@ const Haircare = () => {
               <ListItemText
                 primary={item}
                 primaryTypographyProps={{
-                  color: "#ad1357",
+                  // color: "#ad1357",
+
+                  color: item === category ? "#CC4343" : "#242424",
+                  fontWeight: item === category ? 700 : 500,
                   fontSize: 15,
                   textTransform: "capitalize",
-                  fontWeight: item === category ? 800 : 500,
                 }}
               />
             </ListItemButton>
