@@ -9,32 +9,36 @@ import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
+
+import { Link } from "react-router-dom";
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton>
+    <ListItemButton component={Link} to={"/dashboard"}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <ListItemText primary="Overview" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton component={Link} to={"/orderManagement"}>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Orders" />
+    </ListItemButton>
+
+    <ListItemButton component={Link} to={"/productsMain"}>
+      <ListItemIcon>
+        <LocalMallIcon />
+      </ListItemIcon>
+      <ListItemText primary="Products" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
       <ListItemText primary="Customers" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>

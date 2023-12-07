@@ -5,9 +5,9 @@ const cartSlice = createSlice({
   initialState: {
     cartInfo: {
       subTotal: 0,
-      shipping: 20,
+      shipping: 5,
       total: 0,
-      status: "draft",
+      status: "PENDING",
     },
     cartDetails: [],
     customerInfo: {},

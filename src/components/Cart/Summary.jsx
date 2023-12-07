@@ -15,7 +15,7 @@ import { cartSelector } from "../../redux-toolkit/selectors";
 
 const Summary = () => {
   const { cartInfo } = useSelector(cartSelector);
-
+  console.log(cartInfo);
   return (
     <Grid item xs={3}>
       <Box
@@ -76,7 +76,7 @@ const Summary = () => {
               color: "#CC4343",
             }}
           >
-            {cartInfo.shipping} $
+            {Number(cartInfo.subTotal) > 2000 ? "0" : cartInfo.shipping}$
           </Typography>
         </Stack>
         <Divider />
@@ -119,7 +119,7 @@ const Summary = () => {
         <Button
           variant="contained"
           component={Link}
-          to="/chekout"
+          to="/checkout"
           //  color="error"
           fullWidth
           sx={{

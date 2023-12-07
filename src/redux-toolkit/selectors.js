@@ -6,7 +6,7 @@ export const searchPriceSelector = (state) => state.filters.price;
 export const searchBrandSelector = (state) => state.filters.brand;
 export const cosmeticsListSelector = (state) => state.cosmeticsList.cosmetics;
 export const cartSelector = (state) => state.cart;
-export const orderListSelector = (state) => state.orders;
+export const orderListSelector = (state) => state.orders.orderList;
 
 export const filtersCosmeticsSelector = createSelector(
   cosmeticsListSelector,

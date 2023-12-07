@@ -1,25 +1,21 @@
-import * as React from "react";
-import CssBaseline from "@mui/material/CssBaseline";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import Toolbar from "@mui/material/Toolbar";
+import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
-import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
+import Stepper from "@mui/material/Stepper";
 import Typography from "@mui/material/Typography";
+import * as React from "react";
 import AddressForm from "./AddressForm";
 import PaymentForm from "./PaymentForm";
 import Review from "./Review";
 
+import { useDispatch, useSelector } from "react-redux";
+import shortid from "shortid";
 import { checkoutCartThunkAction } from "../../reducers/cartSlice";
 import { cartSelector } from "../../redux-toolkit/selectors";
-import { useDispatch, useSelector } from "react-redux";
-import { v4 as uuid } from "uuid";
-import shortid from "shortid";
 
 function Copyright() {
   return (
@@ -41,16 +37,17 @@ export default function Checkout() {
 
   const cart = useSelector(cartSelector);
 
-  console.log(cart);
-
   const [activeStep, setActiveStep] = React.useState(0);
   const [id, setID] = React.useState("");
-
+  console.log(cart);
   const handleCheckoutCart = () => {
+    const shippingCost =
+      Number(cart.cartInfo.subTotal) > 2000 ? 0 : cart.cartInfo.shipping;
     const order = {
       orderId: shortid.generate(),
       orderInfo: {
         ...cart.cartInfo,
+        shipping: shippingCost,
         orderDate: Math.floor(Date.now() / 1000),
       },
       orderDetails: [...cart.cartDetails],

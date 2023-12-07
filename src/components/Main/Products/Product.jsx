@@ -23,7 +23,7 @@ import { useDispatch } from "react-redux";
 import cartSlice from "../../../reducers/cartSlice";
 
 const Product = ({ product }) => {
-  const { name, image, originalPrice, currentPrice, star, brand } = product;
+  const { name, image, prevPrice, currentPrice, star, brand } = product;
   const dispatch = useDispatch();
   const [openSnackbar, setOpenSnackbar] = useState(false);
   return (
@@ -118,7 +118,7 @@ const Product = ({ product }) => {
                   variant="h6"
                   sx={{ textDecoration: "line-through" }}
                 >
-                  ${originalPrice}
+                  ${prevPrice}
                 </Typography>
                 <Typography
                   variant="h6"

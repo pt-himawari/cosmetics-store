@@ -1,17 +1,16 @@
-import * as React from "react";
 import {
   Box,
   Button,
-  Grid,
-  Typography,
-  TextField,
-  FormControlLabel,
   Checkbox,
+  FormControlLabel,
+  Grid,
+  TextField,
+  Typography,
 } from "@mui/material";
+import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import cartSlice from "../../reducers/cartSlice";
-import { v4 as uuid } from "uuid";
 import { cartSelector } from "../../redux-toolkit/selectors";
 export default function AddressForm({ activeStep, setActiveStep }) {
   const { register, handleSubmit, formState } = useForm({
@@ -25,7 +24,7 @@ export default function AddressForm({ activeStep, setActiveStep }) {
   const cart = useSelector(cartSelector);
   const { customerInfo } = cart;
   const onSubmit = handleSubmit((data) => {
-    const fullAddress = `${data.address}, ${data.city}, ${data.state}, ${data.country}`;
+    const fullAddress = `${data.address}, ${data.state}, ${data.city}, ${data.country}`;
     const customerData = {
       fullName: data.fullName,
       phone: data.phone,

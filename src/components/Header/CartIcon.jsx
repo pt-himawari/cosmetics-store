@@ -1,16 +1,15 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import {
-  IconButton,
-  Box,
-  Tooltip,
   Badge,
+  Box,
+  IconButton,
   Menu,
   MenuItem,
+  Tooltip,
   Typography,
   styled,
 } from "@mui/material";
@@ -38,7 +37,7 @@ const Cart = () => {
         <IconButton
           aria-label="cart"
           component={Link}
-          to={"/cartpage"}
+          to={"/cartPage"}
           onClick={(event) => {
             setCartMenuAnchor(event.currentTarget);
           }}
