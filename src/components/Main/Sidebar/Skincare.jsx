@@ -16,6 +16,8 @@ import {
   searchCategorySelector,
   searchTypeSelector,
 } from "../../../redux-toolkit/selectors";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const skincareFilters = ["mask", "toner", "serum", "cleaner", "moisturizer"];
 const Skincare = () => {
@@ -23,12 +25,14 @@ const Skincare = () => {
   const type = useSelector(searchTypeSelector);
   const category = useSelector(searchCategorySelector);
   const buttonValue = "skincare";
+  const theme = useTheme();
+  const isNotXsScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
   // const { category, type } = props;
 
   return (
     <Box>
-      <Accordion defaultExpanded elevation={0}>
+      <Accordion defaultExpanded={isNotXsScreen} elevation={0}>
         <AccordionSummary
           expandIcon={
             <ExpandMoreIcon

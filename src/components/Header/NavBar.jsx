@@ -2,15 +2,20 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Stack, Button } from "@mui/material";
 const pages = [
-  { label: "Home", value: "/home" },
-  { label: "About", value: "/about" },
-  { label: "Shop", value: "/shop" },
-  { label: "Products", value: "/products" },
+  { label: "Home", value: "/" },
+  { label: "About", value: "/" },
+  { label: "Shop", value: "/" },
+  { label: "Products", value: "/" },
 ];
 
 const NavBar = () => {
   return (
-    <Stack direction="row" spacing={3}>
+    <Stack
+      direction="row"
+      spacing={3}
+      justifyContent="center"
+      sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
+    >
       {pages.map((page) => (
         <Button
           key={page.value}

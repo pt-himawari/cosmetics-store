@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Button, Container } from "@mui/material";
+import { Box, Grid, Typography, Button, Container } from "@mui/material";
 import { styled } from "@mui/system";
 
 // Custom styled components
@@ -14,6 +14,7 @@ const BannerBox = styled(Box)({
   backgroundImage: "url(path-to-your-background-image.jpg)",
   backgroundSize: "cover",
   color: "black",
+  // direction: "column",
 });
 
 const TextSection = styled(Box)({
@@ -27,9 +28,19 @@ const ActionButton = styled(Button)({
 // Image and text can be passed as props or imported from a file
 const Banner = () => {
   return (
-    <Container sx={{ mt: "60px" }}>
-      <BannerBox>
-        <TextSection sx={{ zIndex: "1000" }}>
+    <Container sx={{ mt: { xs: "70px", md: "120px" }, height: "auto" }}>
+      <BannerBox
+        sx={{
+          height: "100%",
+        }}
+      >
+        <TextSection
+          sx={{
+            zIndex: 100,
+            maxWidth: { xs: "100%", md: "63%" },
+            mb: "20px",
+          }}
+        >
           <Typography
             variant="h1"
             sx={{
@@ -98,11 +109,18 @@ const Banner = () => {
             </ActionButton>
           </Box>
         </TextSection>
+
         <Box
           component="img"
           src="/images/banner.png"
           alt="Model"
-          sx={{ position: "absolute", right: -60, bottom: 0 }}
+          sx={{
+            position: "absolute",
+            right: -60,
+            bottom: 0,
+
+            display: { xs: "none", md: "block" },
+          }}
         />
       </BannerBox>
     </Container>

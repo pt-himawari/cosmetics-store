@@ -1,29 +1,14 @@
-import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Checkbox,
-  Container,
-  FormControlLabel,
-  Paper,
-  Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TablePagination,
-  TableRow,
-  Button,
-  IconButton,
-} from "@mui/material/";
 import AddIcon from "@mui/icons-material/Add";
+import { Box, Button } from "@mui/material/";
+import React, { useEffect, useState } from "react";
 // import { useTheme } from "@mui/material/styles";
-import ProductsTable from "./ProductsTable";
 import { useDispatch } from "react-redux";
-import AddProduct from "./AddProduct";
-import ProductDetails from "./EditProduct/ProductDetails";
-import EditProduct from "./EditProduct/EditProduct";
 import { useLocation } from "react-router-dom";
 import { fetchCosmeticsThunkAction } from "../../../../reducers/cosmeticSlice";
+import AddProduct from "./AddProduct";
+import EditProduct from "./EditProduct/EditProduct";
+import ProductDetails from "./EditProduct/ProductDetails";
+import ProductsTable from "./ProductsTable";
 
 const ProductsManagement = () => {
   const [addNew, setAddNew] = useState(false);
@@ -45,7 +30,7 @@ const ProductsManagement = () => {
 
   useEffect(() => {
     dispatch(fetchCosmeticsThunkAction());
-  }, [dispatch]);
+  }, [dispatch, editProduct]);
   return (
     // <Container maxWidth="lg" sx={{ mt: 14, mb: 4 }}>
     <>

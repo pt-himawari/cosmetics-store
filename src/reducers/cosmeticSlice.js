@@ -19,12 +19,6 @@ const cosmeticSlice = createSlice({
           );
         }
       )
-      .addCase(removeCosmeticsThunkAction.fulfilled, (state, action) => {
-        state.status = "idle";
-        state.cosmetics = state.cosmetics.filter(
-          (p) => p.id !== action.payload?.id
-        );
-      })
       .addCase(editCosmeticsThunkAction.fulfilled, (state, action) => {
         state.status = "idle";
         state.cosmetics = state.cosmetics.map((p) => {
@@ -92,19 +86,7 @@ export const editCosmeticsThunkAction = createAsyncThunk(
     return result;
   }
 );
-export const removeCosmeticsThunkAction = createAsyncThunk(
-  "cosmetics/removeCosmeticsThunkAction",
-  async (data) => {
-    let removeProductRes = await fetch(
-      `https://json-server-psi-three.vercel.app/cosmeticsList/${data?.id}`,
-      {
-        method: "DELETE",
-      }
-    );
-    await removeProductRes.json();
-    return data;
-  }
-);
+
 export const removeMultipleCosmeticsThunkAction = createAsyncThunk(
   "cosmetics/removeMultipleCosmeticsThunkAction",
   async (ids) => {
@@ -122,3 +104,23 @@ export const removeMultipleCosmeticsThunkAction = createAsyncThunk(
 );
 
 export default cosmeticSlice;
+
+// export const removeCosmeticsThunkAction = createAsyncThunk(
+//   "cosmetics/removeCosmeticsThunkAction",
+//   async (data) => {
+//     let removeProductRes = await fetch(
+//       `https://json-server-psi-three.vercel.app/cosmeticsList/${data?.id}`,
+//       {
+//         method: "DELETE",
+//       }
+//     );
+//     await removeProductRes.json();
+//     return data;
+//   }
+// );
+// .addCase(removeCosmeticsThunkAction.fulfilled, (state, action) => {
+//   state.status = "idle";
+//   state.cosmetics = state.cosmetics.filter(
+//     (p) => p.id !== action.payload?.id
+//   );
+// })

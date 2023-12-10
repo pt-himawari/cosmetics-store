@@ -33,7 +33,7 @@ const CartInfo = () => {
   const dispatch = useDispatch();
   const { cartInfo, cartDetails } = useSelector(cartSelector);
 
-  const rows = [...cartDetails];
+  // const rows = [...cartDetails];
   const totalQuantity = cartDetails.reduce((accumulator, currentValue) => {
     return accumulator + currentValue.quantity;
   }, 0);

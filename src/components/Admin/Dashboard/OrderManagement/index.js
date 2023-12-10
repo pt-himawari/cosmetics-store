@@ -96,7 +96,7 @@ export default function OrderManagement() {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [order, orderBy, page, rowsPerPage]
+    [order, orderBy, page, rowsPerPage, rows]
   );
 
   return (
@@ -151,7 +151,15 @@ export default function OrderManagement() {
                     >
                       #{row.orderID}
                     </TableCell>
-                    <TableCell align="left">{row.customers}</TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        color: "#121f43",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {row.customers}
+                    </TableCell>
 
                     <TableCell align="center">
                       {" "}

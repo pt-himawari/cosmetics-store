@@ -4,6 +4,7 @@ import { Toolbar, Typography, IconButton, Badge } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import User from "./User";
 
 const drawerWidth = 240;
 
@@ -59,7 +60,7 @@ export default function Header({ open, toggleDrawer }) {
           component="h1"
           variant="h6"
           noWrap
-          sx={{ flexGrow: 1, color: "#242424" }}
+          sx={{ flexGrow: 1, color: "#5f748d", fontWeight: "bold" }}
         >
           Dashboard
         </Typography>
@@ -68,6 +69,7 @@ export default function Header({ open, toggleDrawer }) {
             <NotificationsIcon sx={{ color: "#242424" }} />
           </Badge>
         </IconButton>
+        <User />
       </Toolbar>
     </AppBar>
   );

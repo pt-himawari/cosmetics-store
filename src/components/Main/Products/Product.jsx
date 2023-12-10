@@ -18,13 +18,16 @@ import {
   Snackbar,
 } from "@mui/material";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 import cartSlice from "../../../reducers/cartSlice";
+import { toast } from "react-toastify";
 
 const Product = ({ product }) => {
-  const { name, image, prevPrice, currentPrice, star, brand } = product;
+  const { name, image, prevPrice, currentPrice, star, brand, id } = product;
   const dispatch = useDispatch();
+  console.log(id);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   return (
     <Grid item xs={6} md={4}>
@@ -48,18 +51,19 @@ const Product = ({ product }) => {
             </IconButton>
           }
         />
-
-        <CardMedia
-          component="img"
-          sx={{
-            height: "155px",
-            width: "auto",
-            objectFit: "contain",
-            margin: "auto",
-          }}
-          image={image}
-          alt="Paella dish"
-        />
+        <Link to={`/product/${id}`}>
+          <CardMedia
+            component="img"
+            sx={{
+              height: "155px",
+              width: "auto",
+              objectFit: "contain",
+              margin: "auto",
+            }}
+            image={image}
+            alt="Paella dish"
+          />
+        </Link>
 
         <CardContent
           sx={{
@@ -94,7 +98,7 @@ const Product = ({ product }) => {
               fontSize: "15px",
             }}
           >
-            {name}
+            {name.length > 15 ? `${name.substring(0, 15)}...` : name}
           </Typography>
           <Typography
             variant="subtitle1"
@@ -106,20 +110,36 @@ const Product = ({ product }) => {
           >
             {brand}
           </Typography>
-          <CardActions>
+          <CardActions
+            sx={{
+              px: "20px",
+            }}
+          >
             <Stack
               direction="row"
               spacing={10}
               justifyContent="space-between"
               alignItems="center"
             >
-              <Stack direction="row" spacing={1}>
-                <Typography
-                  variant="h6"
-                  sx={{ textDecoration: "line-through" }}
-                >
-                  ${prevPrice}
-                </Typography>
+              <Stack
+                direction="row"
+                spacing={1}
+                justifyContent="flex-start"
+                sx={{
+                  width: "100%",
+                }}
+              >
+                {prevPrice === 0 ? (
+                  ""
+                ) : (
+                  <Typography
+                    variant="h6"
+                    sx={{ textDecoration: "line-through" }}
+                  >
+                    ${prevPrice}
+                  </Typography>
+                )}
+
                 <Typography
                   variant="h6"
                   color="error"
@@ -143,7 +163,9 @@ const Product = ({ product }) => {
                 }}
                 onClick={() => {
                   dispatch(cartSlice.actions.addCart(product));
-                  setOpenSnackbar(true);
+                  toast.success(" Product added to cart successfully!!", {
+                    autoClose: 2000,
+                  });
                 }}
               >
                 <AddShoppingCartIcon />
@@ -152,25 +174,6 @@ const Product = ({ product }) => {
           </CardActions>
         </CardContent>
       </Card>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={3000}
-        onClose={() => setOpenSnackbar(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        sx={{ marginTop: "100px" }} // Add this line
-      >
-        <Alert
-          onClose={() => setOpenSnackbar(false)}
-          // severity="success"
-          variant="filled"
-          sx={{
-            width: "100%",
-            backgroundColor: "#009432",
-          }}
-        >
-          Product added to cart successfully!
-        </Alert>
-      </Snackbar>
     </Grid>
   );
 };

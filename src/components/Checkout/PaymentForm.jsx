@@ -3,18 +3,61 @@ import * as React from "react";
 import {
   Box,
   Button,
-  Grid,
-  Typography,
-  TextField,
-  FormControlLabel,
   Checkbox,
+  FormControlLabel,
+  Grid,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import cartSlice from "../../reducers/cartSlice";
-import { v4 as uuid } from "uuid";
 import { cartSelector } from "../../redux-toolkit/selectors";
+import { useSelector } from "react-redux";
+import { IMaskInput } from "react-imask";
+import PropTypes from "prop-types";
+const CreditCardMaskCustom = React.forwardRef(function CreditCardMaskCustom(
+  props,
+  ref
+) {
+  const { onChange, ...other } = props;
+  return (
+    <IMaskInput
+      {...other}
+      mask="0000-0000-0000-0000"
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      overwrite
+    />
+  );
+});
+CreditCardMaskCustom.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
+  const { onChange, ...other } = props;
+  return (
+    <IMaskInput
+      {...other}
+      mask="00/00"
+      inputRef={ref}
+      // onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      overwrite
+    />
+  );
+});
+
+TextMaskCustom.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
 export default function PaymentForm({ activeStep, setActiveStep }) {
+  const { customerInfo } = useSelector(cartSelector);
+  console.log(customerInfo);
+
   const { register, handleSubmit, formState } = useForm({
     mode: "onBlur",
     criteriaMode: "all",
@@ -22,10 +65,9 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
   const { isDirty, isValid, errors } = formState;
 
   const dispatch = useDispatch();
-  const cart = useSelector(cartSelector);
-  const { customerInfo } = cart;
 
   const onSubmit = handleSubmit((data) => {
+    console.log(data);
     const formData = {
       cardName: data.cardName,
       cardNumber: data.cardNumber,
@@ -49,9 +91,11 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
             })}
             error={Boolean(errors.cardName)}
             helperText={errors.cardName?.message}
+            defaultValue={customerInfo.cardName}
             id="cardName"
             label="Name on card"
             fullWidth
+            color="secondary"
             autoComplete="cc-name"
             variant="standard"
           />
@@ -63,12 +107,33 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
             })}
             error={Boolean(errors.cardNumber)}
             helperText={errors.cardNumber?.message}
+            defaultValue={customerInfo.cardNumber}
+            id="cardNumber"
+            label="Card number"
+            placeholder="0000-0000-0000-0000"
+            fullWidth
+            color="secondary"
+            autoComplete="cc-number"
+            variant="standard"
+            InputProps={{
+              inputComponent: CreditCardMaskCustom,
+            }}
+          />
+          {/* <TextField
+            {...register("cardNumber", {
+              required: "* Please enter your card Number",
+            })}
+            error={Boolean(errors.cardNumber)}
+            helperText={errors.cardNumber?.message}
+            defaultValue={customerInfo.cardNumber}
             id="cardNumber"
             label="Card number"
             fullWidth
+            color="secondary"
             autoComplete="cc-number"
             variant="standard"
-          />
+            inputComponent={CreditCardMaskCustom}
+          /> */}
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
@@ -83,10 +148,15 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
             helperText={errors.expDate?.message}
             id="expDate"
             label="Expiry date"
+            defaultValue={customerInfo.expDate}
             placeholder="MM/YY (11/24)"
             fullWidth
+            color="secondary"
             autoComplete="cc-exp"
             variant="standard"
+            InputProps={{
+              inputComponent: TextMaskCustom,
+            }}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -98,11 +168,14 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
                 message: "Invalid CVV (must be 3 or 4 digits)",
               },
             })}
+            type="number"
             error={Boolean(errors.cvv)}
             helperText={errors.cvv?.message}
             id="cvv"
             label="CVV"
+            defaultValue={customerInfo.cvv}
             fullWidth
+            color="secondary"
             autoComplete="cc-csc"
             variant="standard"
           />
@@ -115,23 +188,24 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
         </Grid>
         <Grid item xs={12}>
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            {/* <Button
+            <Button
               type="button"
               // variant="contained"
               onClick={() => setActiveStep(activeStep - 1)}
-              sx={{ mt: 3, ml: 1 }}
+              sx={{ mt: 3, ml: 1, color: "#ab4aba" }}
             >
               Back
-            </Button> */}
+            </Button>
             <Button
               disabled={!isDirty || !isValid}
               type="button"
               variant="contained"
+              color="secondary"
               // onClick={() => {
               //   setActiveStep(activeStep + 1);
               // }}
               onClick={onSubmit}
-              sx={{ mt: 3, ml: 1 }}
+              sx={{ mt: 3, ml: 1, backgroundColor: "#ab4aba" }}
             >
               Next
             </Button>

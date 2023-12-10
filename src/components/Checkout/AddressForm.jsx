@@ -9,10 +9,15 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import cartSlice from "../../reducers/cartSlice";
 import { cartSelector } from "../../redux-toolkit/selectors";
+import { useSelector } from "react-redux";
+
 export default function AddressForm({ activeStep, setActiveStep }) {
+  const { customerInfo } = useSelector(cartSelector);
+  console.log(customerInfo);
+
   const { register, handleSubmit, formState } = useForm({
     mode: "onBlur",
     criteriaMode: "all",
@@ -21,15 +26,11 @@ export default function AddressForm({ activeStep, setActiveStep }) {
   const { isDirty, isValid, errors } = formState;
 
   const dispatch = useDispatch();
-  const cart = useSelector(cartSelector);
-  const { customerInfo } = cart;
+  // const cart = useSelector(cartSelector);
+  // const { customerInfo } = cart;
   const onSubmit = handleSubmit((data) => {
-    const fullAddress = `${data.address}, ${data.state}, ${data.city}, ${data.country}`;
     const customerData = {
-      fullName: data.fullName,
-      phone: data.phone,
-      email: data.email,
-      address: fullAddress,
+      ...data,
     };
 
     dispatch(cartSlice.actions.saveCustomer(customerData));
@@ -44,6 +45,7 @@ export default function AddressForm({ activeStep, setActiveStep }) {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
+            color="secondary"
             {...register("fullName", {
               required: "* Please enter your full name ",
             })}
@@ -53,6 +55,7 @@ export default function AddressForm({ activeStep, setActiveStep }) {
             name="fullName"
             label="Full Name"
             fullWidth
+            defaultValue={customerInfo.fullName}
             autoComplete="given-name"
             variant="standard"
           />
@@ -91,6 +94,8 @@ export default function AddressForm({ activeStep, setActiveStep }) {
             name="email"
             label="Email"
             fullWidth
+            color="secondary"
+            defaultValue={customerInfo.email}
             autoComplete="shipping address-line1"
             variant="standard"
           />
@@ -102,10 +107,12 @@ export default function AddressForm({ activeStep, setActiveStep }) {
             })}
             error={Boolean(errors.address)}
             helperText={errors.address?.message}
+            defaultValue={customerInfo.address}
             id="address"
             name="address"
             label="Address "
             fullWidth
+            color="secondary"
             autoComplete="shipping address-line2"
             variant="standard"
           />
@@ -117,10 +124,12 @@ export default function AddressForm({ activeStep, setActiveStep }) {
             })}
             error={Boolean(errors.city)}
             helperText={errors.city?.message}
+            defaultValue={customerInfo.city}
             id="city"
             name="city"
             label="City"
             fullWidth
+            color="secondary"
             autoComplete="shipping address-level2"
             variant="standard"
           />
@@ -132,8 +141,10 @@ export default function AddressForm({ activeStep, setActiveStep }) {
             })}
             error={Boolean(errors.state)}
             helperText={errors.state?.message}
+            defaultValue={customerInfo.state}
             id="state"
             name="state"
+            color="secondary"
             label="State/Province/Region"
             fullWidth
             variant="standard"
@@ -147,7 +158,8 @@ export default function AddressForm({ activeStep, setActiveStep }) {
             })}
             error={Boolean(errors.country)}
             helperText={errors.country?.message}
-            required
+            defaultValue={customerInfo.country}
+            color="secondary"
             id="country"
             name="country"
             label="Country"
@@ -176,22 +188,23 @@ export default function AddressForm({ activeStep, setActiveStep }) {
             })}
             error={Boolean(errors.phone)}
             helperText={errors.phone?.message}
+            defaultValue={customerInfo.phone}
             id="phone"
             name="phone"
             label="Phone Number"
             fullWidth
-            autoComplete="family-name"
+            color="secondary"
             variant="standard"
           />
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <FormControlLabel
             control={
               <Checkbox color="secondary" name="saveAddress" value="yes" />
             }
             label="Use this address for payment details"
           />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12}>
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
@@ -199,9 +212,9 @@ export default function AddressForm({ activeStep, setActiveStep }) {
               type="button"
               variant="contained"
               // onClick={}
-
+              color="secondary"
               onClick={onSubmit}
-              sx={{ mt: 3, ml: 1 }}
+              sx={{ mt: 3, ml: 1, backgroundColor: "#ab4aba" }}
             >
               Next
             </Button>

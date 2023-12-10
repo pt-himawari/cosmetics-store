@@ -1,56 +1,96 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import StarIcon from "@mui/icons-material/Star";
+import CircularProgress from "@mui/material/CircularProgress";
+import CheckIcon from "@mui/icons-material/Check";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import {
   Accordion,
+  Fab,
   AccordionDetails,
   AccordionSummary,
   Box,
   Button,
   Chip,
   Grid,
+  Rating,
   Stack,
   Typography,
-  Rating,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Alert,
+  AlertTitle,
+  Slide,
 } from "@mui/material/";
-import StarIcon from "@mui/icons-material/Star";
-import { useDispatch, useSelector } from "react-redux";
-import React, { useState, useEffect } from "react";
 
-import { cosmeticsListSelector } from "../../../../../redux-toolkit/selectors";
-import {
-  removeCosmeticsThunkAction,
-  removeMultipleCosmeticsThunkAction,
-} from "../../../../../reducers/cosmeticSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+
 import ReactMarkdown from "react-markdown";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+// import ReactHtmlParser from "react-html-parser";
+import parse from "html-react-parser";
+import { removeMultipleCosmeticsThunkAction } from "../../../../../reducers/cosmeticSlice";
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const ProductDetails = (props) => {
   const {
     selectProduct,
     setSelectProduct,
     setEditProduct,
+
     setEditProductDetails,
   } = props;
+  const [open, setOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const timer = React.useRef();
   const dispatch = useDispatch();
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
   useEffect(() => {
     async function getProductById() {
-      let productListRes = await fetch(
-        `https://json-server-psi-three.vercel.app/cosmeticsList/${selectProduct?.id}`
-      );
-      let data = await productListRes.json();
-      setSelectProduct(data);
+      try {
+        let productListRes = await axios.get(
+          `https://json-server-psi-three.vercel.app/cosmeticsList/${selectProduct?.id}`
+        );
+        let data = productListRes.data; // With axios, the response data is found in .data
+        setSelectProduct(data);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        // Handle error appropriately
+      }
     }
     getProductById();
-  }, [selectProduct?.id]);
+  }, [selectProduct?.id, setSelectProduct]);
 
   const productWithId = { ...selectProduct };
 
   const handleRemoveProduct = () => {
-    const ids = [selectProduct.id];
-    // console.log(ids);
-    dispatch(removeMultipleCosmeticsThunkAction(ids));
+    if (!isLoading) {
+      setIsLoading(true);
+      const ids = [selectProduct.id];
+      dispatch(removeMultipleCosmeticsThunkAction(ids));
+      timer.current = window.setTimeout(() => {
+        setIsCompleted(true);
+        setIsLoading(false);
 
-    // dispatch(removeCosmeticsThunkAction(selectProduct));
-    setEditProductDetails(false);
+        window.setTimeout(() => {
+          setEditProductDetails(false);
+        }, 1000);
+      }, 2000);
+    }
   };
 
   return (
@@ -68,6 +108,7 @@ const ProductDetails = (props) => {
         sx={{
           m: 0,
           p: 0,
+          pt: 3,
         }}
       >
         {/* imge */}
@@ -102,7 +143,8 @@ const ProductDetails = (props) => {
             // spacing={1}
             sx={{
               padding: "5px",
-              paddingLeft: "40px",
+              paddingTop: "20px",
+              paddingLeft: "50px",
               pb: "0px",
             }}
           >
@@ -316,7 +358,10 @@ const ProductDetails = (props) => {
             <AccordionDetails className="accordionDetails">
               <Typography>
                 {/* <Typography variant="h5"> {productWithId.name}</Typography> */}
-                <ReactMarkdown>{productWithId.description}</ReactMarkdown>
+                {/* <ReactMarkdown> */}
+
+                {parse(String(productWithId.description))}
+                {/* </ReactMarkdown> */}
               </Typography>
             </AccordionDetails>
           </Accordion>
@@ -354,10 +399,130 @@ const ProductDetails = (props) => {
                 type="button"
                 variant="contained"
                 sx={{ mt: 3, ml: 1, backgroundColor: "#e54666" }}
-                onClick={handleRemoveProduct}
+                onClick={() => {
+                  setOpen(true);
+                }}
               >
                 Delete
               </Button>
+              <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={() => {
+                  setOpen(false);
+                }}
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogContent
+                  sx={{
+                    p: "10px",
+                    pb: 0,
+
+                    width: "450px",
+                  }}
+                >
+                  {/* <CircularProgress color="success" /> */}
+                  <DialogContentText
+                    id="alert-dialog-slide-description"
+                    sx={{
+                      width: "100%",
+                      minHeight: "100px",
+                    }}
+                  >
+                    {!isLoading && !isCompleted && (
+                      <Alert severity="warning">
+                        <AlertTitle>Confirm Deletion</AlertTitle>
+                        Are you sure you want to delete?
+                        <strong> This action cannot be undone! </strong>
+                      </Alert>
+                    )}
+
+                    <Box
+                      sx={{
+                        textAlign: "center",
+                        py: isLoading || isCompleted ? 3 : 0,
+                      }}
+                    >
+                      {isLoading && (
+                        <CircularProgress color="success" size={60} />
+                      )}
+                      {isCompleted && (
+                        <>
+                          <Fab color="success">
+                            <CheckIcon />
+                          </Fab>
+                          <p>Deletion successful!</p>
+                        </>
+                      )}
+                    </Box>
+
+                    {/* {isLoading ? (
+                      <Box
+                        sx={{
+                          textAlign: "center",
+                          py: 3,
+                        }}
+                      >
+                        <CircularProgress color="success" size={60} />
+                      </Box>
+                    ) : isCompleted ? (
+                      <Box
+                        sx={{
+                          textAlign: "center",
+                          py: 3,
+                        }}
+                      >
+                        <Fab color="success">
+                          <CheckIcon />
+                        </Fab>
+                      </Box>
+                    ) : (
+                      ""
+                    )} */}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions
+                  sx={{
+                    pt: 1,
+                  }}
+                >
+                  <Button
+                    color="secondary"
+                    type="button"
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#8e8c99",
+                      "&:hover": {
+                        backgroundColor: "#8b8d98",
+                        opacity: 0.8,
+                        color: "white", // Màu văn bản khi hover
+                      },
+                    }}
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    color="error"
+                    type="button"
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#E64D4C",
+                      "&:hover": {
+                        backgroundColor: "#CC4343",
+                        opacity: 0.8,
+                        color: "white", // Màu văn bản khi hover
+                      },
+                    }}
+                    onClick={handleRemoveProduct}
+                  >
+                    Delete
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Box>
           </Box>
         </Grid>

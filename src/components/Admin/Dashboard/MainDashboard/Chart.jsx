@@ -88,8 +88,15 @@ export default function Chart() {
   ];
   return (
     <>
-      <Typography component="h2" variant="h6" color="primary" gutterBottom>
-        Today
+      <Typography
+        component="h2"
+        variant="h6"
+        gutterBottom
+        sx={{
+          color: "#5f748d",
+        }}
+      >
+        Type
       </Typography>
 
       <ResponsiveContainer>

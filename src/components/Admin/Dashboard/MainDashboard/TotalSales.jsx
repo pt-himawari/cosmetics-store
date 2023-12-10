@@ -15,32 +15,46 @@ export default function TotalSales() {
     (total, order) => total + order.orderInfo.total,
     0
   );
-  // console.log(totalSales);
-
-  // const total = orderList.orderInfo.total.reduce(
-  //   (accumulator, currentValue) => Number(accumulator) + Number(currentValue),
-  //   0
-  // );
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  });
 
   return (
     <>
-      <Typography component="h2" variant="h6" color="primary" gutterBottom>
+      <Typography
+        component="h2"
+        variant="h6"
+        gutterBottom
+        sx={{
+          color: "#5f748d",
+        }}
+      >
         Total Sales
       </Typography>
 
-      <Typography component="p" variant="h4">
-        ${totalSales}
+      <Typography
+        component="p"
+        variant="h4"
+        sx={{
+          color: "#2f4365",
+          fontSize: "30px",
+          fontWeight: 600,
+        }}
+      >
+        {formatter.format(totalSales)}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
         {`${new Date().getDate()}-${
           new Date().getMonth() + 1
         }-${new Date().getFullYear()}`}
       </Typography>
-      <div>
+      {/* <div>
         <Link color="primary" href="#" onClick={preventDefault}>
           View balance
         </Link>
-      </div>
+      </div> */}
     </>
   );
 }

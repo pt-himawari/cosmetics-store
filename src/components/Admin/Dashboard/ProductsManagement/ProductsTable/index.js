@@ -1,8 +1,8 @@
 import {
   Box,
   Checkbox,
-  Container,
   FormControlLabel,
+  Link,
   Paper,
   Switch,
   Table,
@@ -11,24 +11,16 @@ import {
   TableContainer,
   TablePagination,
   TableRow,
-  Button,
-  IconButton,
-  Link,
 } from "@mui/material/";
 import Chip from "@mui/material/Chip";
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo } from "react";
 import EnhancedTableHead from "./EnhancedTableHead";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
-import AddIcon from "@mui/icons-material/Add";
-import dayjs from "dayjs";
 
-import { createData, transformData } from "./dataUtils";
-import { getComparator, stableSort } from "./utils";
 import { useSelector } from "react-redux";
-import { orderListSelector } from "../../../../../redux-toolkit/selectors";
 import { cosmeticsListSelector } from "../../../../../redux-toolkit/selectors";
-import { fetchCosmeticsThunkAction } from "../../../../../reducers/cosmeticSlice";
-import { useDispatch } from "react-redux";
+import { transformData } from "./dataUtils";
+import { getComparator, stableSort } from "./utils";
 
 export default function ProductsTable(props) {
   const { setEditProductDetails, setSelectProduct } = props;

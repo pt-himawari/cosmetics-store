@@ -1,4 +1,11 @@
-import { Grid, List, ListItem, ListItemText, Typography } from "@mui/material";
+import {
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  Divider,
+} from "@mui/material";
 import * as React from "react";
 import { useSelector } from "react-redux";
 
@@ -9,11 +16,13 @@ export default function Review() {
 
   const cardNumber = customerInfo.cardNumber;
   const maskedCardNumber = cardNumber
-    .split("-")
-    .map((part, index, array) =>
-      index < array.length - 1 ? part.replace(/\d/g, "x") : part
-    )
-    .join("-");
+    ? cardNumber
+        .split("-")
+        .map((part, index, array) =>
+          index < array.length - 1 ? part.replace(/\d/g, "x") : part
+        )
+        .join("-")
+    : "";
   const payments = [
     { name: "Card type", detail: "Visa" },
     { name: "Card holder", detail: customerInfo.cardName },
@@ -50,13 +59,18 @@ export default function Review() {
           </Typography>
         </ListItem>
       </List>
+      <Divider />
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2, fontWeight: 700 }}>
             Shipping
           </Typography>
           <Typography gutterBottom>{customerInfo.fullName}</Typography>
-          <Typography gutterBottom>{customerInfo.address}</Typography>
+          <Typography gutterBottom>
+            {/* const fullAddress = `${data.address}, ${data.state}, ${data.city}, ${data.country}`; */}
+
+            {`${customerInfo.address},${customerInfo.state},${customerInfo.city},${customerInfo.country}`}
+          </Typography>
           <Typography gutterBottom>{customerInfo.phone}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>

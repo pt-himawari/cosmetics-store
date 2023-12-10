@@ -16,6 +16,7 @@ function EnhancedTableToolbar(props) {
   return (
     <Toolbar
       sx={{
+        borderBottom: "  2px solid #e0e0e0",
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
@@ -38,7 +39,7 @@ function EnhancedTableToolbar(props) {
         </Typography>
       ) : (
         <Typography
-          sx={{ flex: "1 1 100%" }}
+          sx={{ flex: "1 1 100%", color: "#65636d", fontWeight: 800 }}
           variant="h6"
           id="tableTitle"
           component="div"

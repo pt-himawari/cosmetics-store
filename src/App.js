@@ -6,6 +6,9 @@ import CheckoutPage from "./pages/CheckoutPage";
 import DashboardPage from "./pages/Admin/DashboardPage";
 import OrderListPage from "./pages/Admin/OrderListPage";
 import ProductsPage from "./pages/Admin/ProductsPage";
+import CosmeticsDetailsPage from "./pages/CosmeticsDetailsPage";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   return (
     <>
@@ -16,6 +19,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/orderManagement" element={<OrderListPage />} />
         <Route path="/productsMain" element={<ProductsPage />} />
+        <Route path="/product/:id" element={<CosmeticsDetailsPage />} />
       </Routes>
     </>
   );

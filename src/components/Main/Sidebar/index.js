@@ -14,7 +14,7 @@ const Sidebar = () => {
 
   const category = useSelector(searchCategorySelector);
   return (
-    <Grid item xs={0} md={3}>
+    <Grid item xs={12} md={3}>
       <Stack
         sx={{
           fontSize: "14px !important",

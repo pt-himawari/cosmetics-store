@@ -1,12 +1,12 @@
 import React from "react";
-import { styled, ThemeProvider } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { mainListItems, secondaryListItems } from "./ListItems";
+import { MainListItems, secondaryListItems } from "./ListItems";
 
 const drawerWidth = 240;
 const Drawer = styled(MuiDrawer, {
@@ -58,7 +58,7 @@ export default function Sidebar({ open, toggleDrawer }) {
 
       <Divider />
       <List component="nav">
-        {mainListItems}
+        {<MainListItems />}
         <Divider sx={{ my: 1 }} />
         {secondaryListItems}
       </List>

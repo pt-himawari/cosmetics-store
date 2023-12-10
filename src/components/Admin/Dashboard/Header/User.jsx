@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { lazy, useState } from "react";
 import {
   Box,
   Tooltip,
@@ -14,29 +14,20 @@ import { Link } from "react-router-dom";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-const color = {
-  color: "#e54666",
-};
 const settings = [
   {
     label: "Profile",
-    value: <AccountCircleOutlinedIcon sx={color} />,
-    to: "/",
+    value: <AccountCircleOutlinedIcon color="secondary" />,
+    to: "/dashboard",
   },
   {
     label: "Settings",
-    value: <SettingsSuggestOutlinedIcon sx={color} />,
-    to: "/",
-  },
-  {
-    label: "Dashboard",
-    value: <DashboardOutlinedIcon sx={color} />,
+    value: <SettingsSuggestOutlinedIcon color="secondary" />,
     to: "/dashboard",
   },
   {
     label: "Logout",
-    value: <LogoutOutlinedIcon sx={color} />,
+    value: <LogoutOutlinedIcon color="secondary" />,
     to: "/",
   },
 ];
@@ -53,11 +44,11 @@ const User = () => {
           onClick={(event) => setAnchorElUser(event.currentTarget)}
           sx={{ p: 0 }}
         >
-          <Avatar alt="Remy Sharp" src="/images/user-1.png" />
+          <Avatar alt="Remy Sharp" src="/images/Image-60.png" />
         </IconButton>
       </Tooltip>
       <Menu
-        sx={{ mt: "47px" }}
+        sx={{ mt: "45px" }}
         id="menu-appbar"
         anchorEl={anchorElUser}
         anchorOrigin={{
@@ -75,13 +66,8 @@ const User = () => {
         {settings.map((setting) => (
           <MenuItem key={setting.label} component={Link} to={setting.to}>
             <ListItemIcon>{setting.value}</ListItemIcon>
-            <ListItemText
-              sx={{
-                color: "#121f43",
-              }}
-            >
-              {setting.label}
-            </ListItemText>
+            <ListItemText>{setting.label}</ListItemText>
+            {/* <Typography textAlign="center">{setting.}</Typography> */}
           </MenuItem>
         ))}
       </Menu>

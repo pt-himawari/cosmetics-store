@@ -10,6 +10,7 @@ function preventDefault(event) {
 
 export default function TotalOrders() {
   const orderList = useSelector(orderListSelector);
+
   // console.log(orderList.orderInfo);
 
   // const total = orderList.orderInfo.total.reduce(
@@ -19,11 +20,26 @@ export default function TotalOrders() {
 
   return (
     <>
-      <Typography component="h2" variant="h6" color="primary" gutterBottom>
+      <Typography
+        component="h2"
+        variant="h6"
+        gutterBottom
+        sx={{
+          color: "#5f748d",
+        }}
+      >
         Total Order
       </Typography>
 
-      <Typography component="p" variant="h4">
+      <Typography
+        component="p"
+        variant="h4"
+        sx={{
+          color: "#2f4365",
+          fontSize: "30px",
+          fontWeight: 600,
+        }}
+      >
         {orderList.length}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
@@ -31,11 +47,11 @@ export default function TotalOrders() {
           new Date().getMonth() + 1
         }-${new Date().getFullYear()}`}
       </Typography>
-      <div>
+      {/* <div>
         <Link color="primary" href="#" onClick={preventDefault}>
           View balance
         </Link>
-      </div>
+      </div> */}
     </>
   );
 }

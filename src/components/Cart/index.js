@@ -1,13 +1,13 @@
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import React from "react";
 import { Link } from "react-router-dom";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import { Grid, Container, Box, Typography, Button, Stack } from "@mui/material";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 
+import { useSelector } from "react-redux";
+import { cartSelector } from "../../redux-toolkit/selectors";
 import CartInfo from "./CartInfo";
 import Summary from "./Summary";
-import { cartSelector } from "../../redux-toolkit/selectors";
-import { useSelector, useDispatch } from "react-redux";
 
 const Cart = () => {
   const { cartDetails } = useSelector(cartSelector);

@@ -1,48 +1,72 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import Stepper from "@mui/material/Stepper";
-import Typography from "@mui/material/Typography";
-import * as React from "react";
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  Paper,
+  Step,
+  StepLabel,
+  Stepper,
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  Fab,
+  IconButton,
+  DialogTitle,
+  Slide,
+  Toolbar,
+  Tooltip,
+  Typography,
+  alpha,
+} from "@mui/material";
 import AddressForm from "./AddressForm";
 import PaymentForm from "./PaymentForm";
 import Review from "./Review";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import CheckIcon from "@mui/icons-material/Check";
 import { useDispatch, useSelector } from "react-redux";
 import shortid from "shortid";
 import { checkoutCartThunkAction } from "../../reducers/cartSlice";
 import { cartSelector } from "../../redux-toolkit/selectors";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 const steps = ["Shipping address", "Payment details", "Review your order"];
 
 export default function Checkout() {
   const dispatch = useDispatch();
+  const [open, setOpen] = React.useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const timer = React.useRef();
   const cart = useSelector(cartSelector);
 
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
   const [activeStep, setActiveStep] = React.useState(0);
   const [id, setID] = React.useState("");
   console.log(cart);
   const handleCheckoutCart = () => {
     const shippingCost =
       Number(cart.cartInfo.subTotal) > 2000 ? 0 : cart.cartInfo.shipping;
+    const fullAddress = `${cart.customerInfo.address}, ${cart.customerInfo.state}, ${cart.customerInfo.city}, ${cart.customerInfo.country}`;
+    const newCustomerInfo = {
+      fullAddress, // shorthand property
+      cardName: cart.customerInfo.cardName,
+      cardNumber: cart.customerInfo.cardNumber,
+      cvv: cart.customerInfo.cvv,
+      email: cart.customerInfo.email,
+      expDate: cart.customerInfo.expDate,
+      fullName: cart.customerInfo.fullName,
+      phone: cart.customerInfo.phone,
+    };
     const order = {
       orderId: shortid.generate(),
       orderInfo: {
@@ -52,13 +76,24 @@ export default function Checkout() {
       },
       orderDetails: [...cart.cartDetails],
       customerInfo: {
-        ...cart.customerInfo,
+        ...newCustomerInfo,
       },
     };
-    dispatch(checkoutCartThunkAction(order));
-
     setID(order.orderId);
-    setActiveStep(activeStep + 1);
+    if (!isLoading) {
+      setIsLoading(true);
+      dispatch(checkoutCartThunkAction(order));
+      timer.current = window.setTimeout(() => {
+        setIsCompleted(true);
+        setIsLoading(false);
+        window.setTimeout(() => {
+          setOpen(false);
+          setIsLoading(false);
+          setIsCompleted(false);
+          setActiveStep(activeStep + 1);
+        }, 1000);
+      }, 2000);
+    }
   };
 
   function getStepContent(step) {
@@ -77,16 +112,13 @@ export default function Checkout() {
         throw new Error("Unknown step");
     }
   }
-  const handleBack = () => {
-    // setActiveStep(activeStep - 1);
-  };
 
   return (
     <React.Fragment>
       <Container
         // component="main"
         // maxWidth="sm"
-        sx={{ mb: 4, mt: 12, width: "60%" }}
+        sx={{ mb: 4, mt: 12, width: "60%", minHeight: "90vh" }}
       >
         <Paper
           variant="outlined"
@@ -120,30 +152,135 @@ export default function Checkout() {
             <React.Fragment>
               {getStepContent(activeStep)}
               <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                {/* {activeStep !== 0 && (
-                  <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                {activeStep === 2 && (
+                  <Button
+                    onClick={() => {
+                      setActiveStep(activeStep - 1);
+                    }}
+                    sx={{ mt: 3, ml: 1, color: "#ab4aba" }}
+                  >
                     Back
                   </Button>
-                )}  */}
+                )}
 
                 <Button
                   variant="contained"
-                  onClick={handleCheckoutCart}
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  color="secondary"
                   sx={{
                     mt: 3,
                     ml: 1,
-
+                    backgroundColor: "#ab4aba",
                     display: activeStep !== steps.length - 1 ? "none" : "block",
                   }}
                 >
                   Place order
                   {/* {activeStep === steps.length - 1 ? "Place order" : "Next"} */}
                 </Button>
+                <Dialog
+                  open={open}
+                  TransitionComponent={Transition}
+                  keepMounted
+                  onClose={() => {
+                    setOpen(false);
+                  }}
+                  aria-describedby="alert-dialog-slide-description"
+                >
+                  <DialogContent
+                    sx={{
+                      p: "10px",
+                      pb: 0,
+                    }}
+                  >
+                    {/* <CircularProgress color="success" /> */}
+                    <DialogContentText
+                      id="alert-dialog-slide-description"
+                      sx={{
+                        // width: "100%",
+                        minWidth: "400px",
+                        minHeight: "100px",
+                      }}
+                    >
+                      {!isLoading && !isCompleted && (
+                        <Typography
+                          px={3}
+                          pt={4}
+                          variant="h6"
+                          sx={{
+                            color: "#121f43 !important",
+                          }}
+                        >
+                          Are you sure you want to proceed with payment?
+                        </Typography>
+                      )}
+
+                      <Box
+                        sx={{
+                          textAlign: "center",
+                          py: isLoading || isCompleted ? 3 : 0,
+                        }}
+                      >
+                        {isLoading && (
+                          <CircularProgress color="success" size={60} />
+                        )}
+                        {isCompleted && (
+                          <>
+                            <Fab color="success">
+                              <CheckIcon />
+                            </Fab>
+                            <p>Payment Successful!</p>
+                          </>
+                        )}
+                      </Box>
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions
+                    sx={{
+                      pt: 1,
+                    }}
+                  >
+                    <Button
+                      color="secondary"
+                      type="button"
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "#8e8c99",
+                        "&:hover": {
+                          backgroundColor: "#8b8d98",
+                          opacity: 0.8,
+                          color: "white", // Màu văn bản khi hover
+                        },
+                      }}
+                      onClick={() => {
+                        setOpen(false);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      color="error"
+                      type="button"
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "#E64D4C",
+                        "&:hover": {
+                          backgroundColor: "#CC4343",
+                          opacity: 0.8,
+                          color: "white", // Màu văn bản khi hover
+                        },
+                      }}
+                      onClick={handleCheckoutCart}
+                    >
+                      OK
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </Box>
             </React.Fragment>
           )}
         </Paper>
-        <Copyright />
       </Container>
     </React.Fragment>
   );
