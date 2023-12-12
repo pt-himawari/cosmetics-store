@@ -1,7 +1,6 @@
 import * as React from "react";
-
-import MainLayout from "../layouts/MainLayout";
 import Checkout from "../components/Checkout";
+import MainLayout from "../layouts/MainLayout";
 
 export default function CheckoutPage() {
   return (

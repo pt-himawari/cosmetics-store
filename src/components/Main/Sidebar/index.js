@@ -1,12 +1,12 @@
-import { Grid, Stack, Button } from "@mui/material";
+import { Button, Grid, Stack } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import filtersSlice from "../../../reducers/filtersSlice";
-import Haircare from "./Haircare";
-import Makeup from "./Makeup";
 import Price from "./Price";
 import Search from "./Search";
-import Skincare from "./Skincare";
+import Makeup from "./Makeup";
 import Brands from "./Brands";
+import Haircare from "./Haircare";
+import Skincare from "./Skincare";
+import filtersSlice from "../../../reducers/filtersSlice";
 import { searchCategorySelector } from "../../../redux-toolkit/selectors";
 
 const Sidebar = () => {
@@ -27,7 +27,6 @@ const Sidebar = () => {
 
         {/* search All */}
         <Button
-          // value={category}
           sx={{
             width: "100%",
             py: 1,
@@ -44,6 +43,8 @@ const Sidebar = () => {
           }}
           onClick={() => {
             dispatch(filtersSlice.actions.setSearchCategory("All"));
+            dispatch(filtersSlice.actions.setSearchText(""));
+            dispatch(filtersSlice.actions.setSearchBrand("All"));
             dispatch(filtersSlice.actions.setSearchType("All"));
           }}
         >

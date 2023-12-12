@@ -1,6 +1,3 @@
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import StarIcon from "@mui/icons-material/Star";
 import {
   Box,
   Button,
@@ -14,25 +11,24 @@ import {
   Rating,
   Stack,
   Typography,
-  Alert,
-  Snackbar,
 } from "@mui/material";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
-import { useDispatch } from "react-redux";
-import cartSlice from "../../../reducers/cartSlice";
+import React from "react";
+import Link from "@mui/material/Link";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import StarIcon from "@mui/icons-material/Star";
+import { Link as LinkRouter } from "react-router-dom";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import cartSlice from "../../../reducers/cartSlice";
 
 const Product = ({ product }) => {
   const { name, image, prevPrice, currentPrice, star, brand, id } = product;
   const dispatch = useDispatch();
-  console.log(id);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+
   return (
     <Grid item xs={6} md={4}>
       {/* San pham */}
-
       <Card
         elevation={3}
         sx={{
@@ -51,7 +47,7 @@ const Product = ({ product }) => {
             </IconButton>
           }
         />
-        <Link to={`/product/${id}`}>
+        <LinkRouter to={`/product/${id}`}>
           <CardMedia
             component="img"
             sx={{
@@ -63,7 +59,7 @@ const Product = ({ product }) => {
             image={image}
             alt="Paella dish"
           />
-        </Link>
+        </LinkRouter>
 
         <CardContent
           sx={{
@@ -90,26 +86,37 @@ const Product = ({ product }) => {
               }
             />
           </Box>
-          <Typography
-            variant="caption"
+          <Link
+            component={LinkRouter}
+            to={`/product/${id}`}
+            underline="hover"
             sx={{
-              // textTransform: "capitalize !important",
-              textAlign: "center",
-              fontSize: "15px",
+              color: "#121f43",
             }}
           >
-            {name.length > 15 ? `${name.substring(0, 15)}...` : name}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            sx={{
-              fontSize: "15px",
-              fontWeight: 600,
-              // textTransform: "capitalize",
-            }}
-          >
-            {brand}
-          </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                // textTransform: "capitalize !important",
+                textAlign: "center",
+                fontSize: "15px",
+              }}
+            >
+              {name.length > 15 ? `${name.substring(0, 15)}...` : name}
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontSize: "15px",
+                textAlign: "center",
+
+                fontWeight: 600,
+                // textTransform: "capitalize",
+              }}
+            >
+              {brand}
+            </Typography>
+          </Link>
           <CardActions
             sx={{
               px: "20px",
@@ -164,7 +171,7 @@ const Product = ({ product }) => {
                 onClick={() => {
                   dispatch(cartSlice.actions.addCart(product));
                   toast.success(" Product added to cart successfully!!", {
-                    autoClose: 2000,
+                    autoClose: 1000,
                   });
                 }}
               >

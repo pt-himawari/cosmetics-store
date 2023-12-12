@@ -1,18 +1,9 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import cartSlice from "../../reducers/cartSlice";
 import { cartSelector } from "../../redux-toolkit/selectors";
-import { useSelector } from "react-redux";
 
 export default function AddressForm({ activeStep, setActiveStep }) {
   const { customerInfo } = useSelector(cartSelector);
@@ -22,12 +13,9 @@ export default function AddressForm({ activeStep, setActiveStep }) {
     mode: "onBlur",
     criteriaMode: "all",
   });
-
   const { isDirty, isValid, errors } = formState;
 
   const dispatch = useDispatch();
-  // const cart = useSelector(cartSelector);
-  // const { customerInfo } = cart;
   const onSubmit = handleSubmit((data) => {
     const customerData = {
       ...data,
@@ -176,9 +164,7 @@ export default function AddressForm({ activeStep, setActiveStep }) {
                 message: "* Please enter your phone number!",
               },
               pattern: {
-                value:
-                  // /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
-                  /^\d+$/,
+                value: /^\d+$/,
                 message: "* Invalid phone number format!",
               },
               min: {
@@ -189,6 +175,7 @@ export default function AddressForm({ activeStep, setActiveStep }) {
             error={Boolean(errors.phone)}
             helperText={errors.phone?.message}
             defaultValue={customerInfo.phone}
+            type="number"
             id="phone"
             name="phone"
             label="Phone Number"
@@ -197,14 +184,7 @@ export default function AddressForm({ activeStep, setActiveStep }) {
             variant="standard"
           />
         </Grid>
-        {/* <Grid item xs={12}>
-          <FormControlLabel
-            control={
-              <Checkbox color="secondary" name="saveAddress" value="yes" />
-            }
-            label="Use this address for payment details"
-          />
-        </Grid> */}
+
         <Grid item xs={12}>
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button

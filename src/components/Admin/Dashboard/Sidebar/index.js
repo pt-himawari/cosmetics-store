@@ -1,11 +1,8 @@
 import React from "react";
-import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
+import { styled } from "@mui/material/styles";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { Toolbar, List, Divider, IconButton } from "@mui/material";
 import { MainListItems, secondaryListItems } from "./ListItems";
 
 const drawerWidth = 240;

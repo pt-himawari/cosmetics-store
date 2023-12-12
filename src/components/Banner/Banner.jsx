@@ -1,6 +1,6 @@
 import React from "react";
-import { Box, Grid, Typography, Button, Container } from "@mui/material";
 import { styled } from "@mui/system";
+import { Box, Typography, Button, Container } from "@mui/material";
 
 // Custom styled components
 const BannerBox = styled(Box)({
@@ -14,7 +14,6 @@ const BannerBox = styled(Box)({
   backgroundImage: "url(path-to-your-background-image.jpg)",
   backgroundSize: "cover",
   color: "black",
-  // direction: "column",
 });
 
 const TextSection = styled(Box)({
@@ -83,8 +82,6 @@ const Banner = () => {
                   color: "#FFFF",
                   borderColor: "#F25050",
                 },
-
-                // Các thuộc tính CSS khác tùy ý
               }}
             >
               Shop Now

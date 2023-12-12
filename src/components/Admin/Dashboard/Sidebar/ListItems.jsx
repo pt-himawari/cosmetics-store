@@ -1,30 +1,21 @@
-import React, { useState } from "react";
-
 import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
   ListSubheader,
 } from "@mui/material";
-
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import React from "react";
 import PeopleIcon from "@mui/icons-material/People";
 import LayersIcon from "@mui/icons-material/Layers";
-import AssignmentIcon from "@mui/icons-material/Assignment";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
-// import { NavLink } from "react-router-dom";
-// import { Link } from "react-router-dom";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useLocation, Link } from "react-router-dom";
 const color = {
   color: "#536b88",
 };
 export const MainListItems = () => {
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  const handleClick = (item) => {
-    setSelectedItem(item);
-  };
   const location = useLocation();
 
   const isRouteActive = (route) => {

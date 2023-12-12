@@ -1,20 +1,19 @@
-import React, { useState } from "react";
 import {
-  Box,
-  Tooltip,
-  IconButton,
   Avatar,
-  Menu,
-  MenuItem,
-  Typography,
+  Box,
+  IconButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
+  Tooltip,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutlined";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutlined";
 const color = {
   color: "#e54666",
 };
@@ -48,8 +47,6 @@ const User = () => {
     <Box sx={{}}>
       <Tooltip title="Open settings">
         <IconButton
-          // component={Link}
-          // to={"/dashboard"}
           onClick={(event) => setAnchorElUser(event.currentTarget)}
           sx={{ p: 0 }}
         >

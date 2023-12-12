@@ -1,36 +1,29 @@
-import React, { useState, useEffect } from "react";
 import {
-  Container,
-  Paper,
-  Step,
-  StepLabel,
-  Stepper,
-  Alert,
-  AlertTitle,
   Box,
   Button,
+  Container,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   Fab,
-  IconButton,
-  DialogTitle,
+  Paper,
   Slide,
-  Toolbar,
-  Tooltip,
+  Step,
+  StepLabel,
+  Stepper,
   Typography,
-  alpha,
 } from "@mui/material";
+import shortid from "shortid";
+import CheckIcon from "@mui/icons-material/Check";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import CircularProgress from "@mui/material/CircularProgress";
+import Review from "./Review";
 import AddressForm from "./AddressForm";
 import PaymentForm from "./PaymentForm";
-import Review from "./Review";
-import CircularProgress from "@mui/material/CircularProgress";
-import CheckIcon from "@mui/icons-material/Check";
-import { useDispatch, useSelector } from "react-redux";
-import shortid from "shortid";
-import { checkoutCartThunkAction } from "../../reducers/cartSlice";
 import { cartSelector } from "../../redux-toolkit/selectors";
+import { checkoutCartThunkAction } from "../../reducers/cartSlice";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -39,7 +32,6 @@ const steps = ["Shipping address", "Payment details", "Review your order"];
 export default function Checkout() {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const timer = React.useRef();
@@ -55,7 +47,7 @@ export default function Checkout() {
   console.log(cart);
   const handleCheckoutCart = () => {
     const shippingCost =
-      Number(cart.cartInfo.subTotal) > 2000 ? 0 : cart.cartInfo.shipping;
+      Number(cart.cartInfo.subTotal) > 500 ? Number(0) : Number(5);
     const fullAddress = `${cart.customerInfo.address}, ${cart.customerInfo.state}, ${cart.customerInfo.city}, ${cart.customerInfo.country}`;
     const newCustomerInfo = {
       fullAddress, // shorthand property
@@ -116,9 +108,12 @@ export default function Checkout() {
   return (
     <React.Fragment>
       <Container
-        // component="main"
-        // maxWidth="sm"
-        sx={{ mb: 4, mt: 12, width: "60%", minHeight: "90vh" }}
+        maxWidth={
+          activeStep === steps.length - 1 || activeStep === steps.length
+            ? "md"
+            : "sm"
+        }
+        sx={{ mb: 4, mt: 12, minHeight: "90vh" }}
       >
         <Paper
           variant="outlined"
@@ -177,7 +172,6 @@ export default function Checkout() {
                   }}
                 >
                   Place order
-                  {/* {activeStep === steps.length - 1 ? "Place order" : "Next"} */}
                 </Button>
                 <Dialog
                   open={open}
@@ -194,7 +188,6 @@ export default function Checkout() {
                       pb: 0,
                     }}
                   >
-                    {/* <CircularProgress color="success" /> */}
                     <DialogContentText
                       id="alert-dialog-slide-description"
                       sx={{

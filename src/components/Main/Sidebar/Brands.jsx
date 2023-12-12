@@ -1,14 +1,14 @@
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
-  ListItemButton,
+  Accordion,
   ListItemText,
+  ListItemButton,
+  AccordionDetails,
+  AccordionSummary,
 } from "@mui/material";
 import React from "react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useDispatch, useSelector } from "react-redux";
 import filtersSlice from "../../../reducers/filtersSlice";
 import { searchBrandSelector } from "../../../redux-toolkit/selectors";
@@ -26,18 +26,14 @@ const brandFilters = [
 ];
 
 const Brands = () => {
-  // const { brand } = props;
   const brand = useSelector(searchBrandSelector);
   const dispatch = useDispatch();
-  // const [buttonValue, setButtonValue] = useState("makeup");
 
   return (
     <Box>
       <Accordion elevation={0}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          // aria-controls="panel1a-content"
-          // id="panel1a-header"
           sx={{
             borderTop: "1px solid #ccc",
             py: 0,
@@ -46,7 +42,6 @@ const Brands = () => {
           }}
         >
           <Button
-            // value="makeup"
             sx={{
               width: "100%",
               pl: 2,
@@ -63,7 +58,6 @@ const Brands = () => {
           </Button>
         </AccordionSummary>
         {/* <Divider /> */}
-
         <AccordionDetails
           sx={{
             py: 0,
@@ -77,22 +71,21 @@ const Brands = () => {
                 // width: "100%",
                 py: 0,
                 minHeight: 32,
-                // backgroundColor: "#fdecee",
-                backgroundColor:
-                  item.toLowerCase() === brand.toLowerCase()
-                    ? "#fdecee"
-                    : "inherit",
+                color: "#242424",
               }}
               onClick={() => {
                 dispatch(filtersSlice.actions.setSearchBrand(item));
                 // console.log(item);
               }}
             >
-              {/* <ListItemIcon sx={{ color: "inherit" }}>{item.icon}</ListItemIcon> */}
               <ListItemText
                 primary={item}
                 primaryTypographyProps={{
-                  color: "#ad1357",
+                  color:
+                    item.toLowerCase() === brand.toLowerCase()
+                      ? "#cc4343"
+                      : "inherit",
+
                   fontSize: 15,
                   fontWeight:
                     item.toLowerCase() === brand.toLowerCase() ? 800 : 500,
@@ -102,7 +95,6 @@ const Brands = () => {
             </ListItemButton>
           ))}
         </AccordionDetails>
-        {/* <Divider /> */}
       </Accordion>
     </Box>
   );

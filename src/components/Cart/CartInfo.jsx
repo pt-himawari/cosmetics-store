@@ -32,8 +32,6 @@ const headCells = [
 const CartInfo = () => {
   const dispatch = useDispatch();
   const { cartInfo, cartDetails } = useSelector(cartSelector);
-
-  // const rows = [...cartDetails];
   const totalQuantity = cartDetails.reduce((accumulator, currentValue) => {
     return accumulator + currentValue.quantity;
   }, 0);
@@ -216,7 +214,6 @@ const CartInfo = () => {
                       component={Link}
                       to="/"
                       sx={{
-                        // backgroundColor: "#CC4343", // Màu nền mới
                         color: "#CC4343", // Màu chữ
                         "&:hover": {
                           backgroundColor: "#f5727314", // Màu nền khi hover
@@ -224,14 +221,12 @@ const CartInfo = () => {
                         },
                       }}
                     >
-                      {/* <Link href="#" underline="hover"> */}
                       <ArrowBackIcon
                         sx={{
                           mr: 1,
                         }}
                       />
                       Continue Shopping
-                      {/* </Link> */}
                     </Button>
                     <Box>
                       <Typography
@@ -250,13 +245,10 @@ const CartInfo = () => {
                   </Box>
                 </TableCell>
               </TableRow>
-              {/* )} */}
             </TableBody>
           </Table>
         </TableContainer>
       </Box>
-      {/* <div style={{ height: 400, width: "100%" }}></div> */}
-      {/* <Box>xs=8sfsdfsd</Box> */}
     </Grid>
   );
 };

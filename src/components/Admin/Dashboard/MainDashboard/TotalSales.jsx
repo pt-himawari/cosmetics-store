@@ -1,25 +1,19 @@
 import React from "react";
-import Link from "@mui/material/Link";
 import { Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { orderListSelector } from "../../../../redux-toolkit/selectors";
 
-function preventDefault(event) {
-  event.preventDefault();
-}
-
+const formatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 2,
+});
 export default function TotalSales() {
   const orderList = useSelector(orderListSelector);
-  // console.log(orderList.orderInfo);
   const totalSales = orderList.reduce(
     (total, order) => total + order.orderInfo.total,
     0
   );
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  });
 
   return (
     <>
@@ -50,11 +44,6 @@ export default function TotalSales() {
           new Date().getMonth() + 1
         }-${new Date().getFullYear()}`}
       </Typography>
-      {/* <div>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
-        </Link>
-      </div> */}
     </>
   );
 }

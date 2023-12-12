@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import {
   Box,
   Button,
@@ -9,13 +7,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import PropTypes from "prop-types";
+import * as React from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { IMaskInput } from "react-imask";
+import { useDispatch, useSelector } from "react-redux";
 import cartSlice from "../../reducers/cartSlice";
 import { cartSelector } from "../../redux-toolkit/selectors";
-import { useSelector } from "react-redux";
-import { IMaskInput } from "react-imask";
-import PropTypes from "prop-types";
 const CreditCardMaskCustom = React.forwardRef(function CreditCardMaskCustom(
   props,
   ref
@@ -43,7 +41,7 @@ const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
       {...other}
       mask="00/00"
       inputRef={ref}
-      // onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      onAccept={(value) => onChange({ target: { name: props.name, value } })}
       overwrite
     />
   );
@@ -98,6 +96,12 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
             color="secondary"
             autoComplete="cc-name"
             variant="standard"
+            inputProps={{
+              style: { textTransform: "uppercase" }, // Đảm bảo văn bản hiển thị là in hoa
+            }}
+            onChange={(event) => {
+              event.target.value = event.target.value.toUpperCase();
+            }}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -119,21 +123,6 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
               inputComponent: CreditCardMaskCustom,
             }}
           />
-          {/* <TextField
-            {...register("cardNumber", {
-              required: "* Please enter your card Number",
-            })}
-            error={Boolean(errors.cardNumber)}
-            helperText={errors.cardNumber?.message}
-            defaultValue={customerInfo.cardNumber}
-            id="cardNumber"
-            label="Card number"
-            fullWidth
-            color="secondary"
-            autoComplete="cc-number"
-            variant="standard"
-            inputComponent={CreditCardMaskCustom}
-          /> */}
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
@@ -151,6 +140,7 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
             defaultValue={customerInfo.expDate}
             placeholder="MM/YY (11/24)"
             fullWidth
+            type="text"
             color="secondary"
             autoComplete="cc-exp"
             variant="standard"
@@ -201,9 +191,6 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
               type="button"
               variant="contained"
               color="secondary"
-              // onClick={() => {
-              //   setActiveStep(activeStep + 1);
-              // }}
               onClick={onSubmit}
               sx={{ mt: 3, ml: 1, backgroundColor: "#ab4aba" }}
             >

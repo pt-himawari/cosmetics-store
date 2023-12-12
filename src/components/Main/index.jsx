@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Grid } from "@mui/material";
-
 import Products from "./Products";
 import Sidebar from "./Sidebar";
 

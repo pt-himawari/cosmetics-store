@@ -5,6 +5,11 @@ const cosmeticSlice = createSlice({
   initialState: {
     status: "idle",
     cosmetics: [],
+    cosmeticsPagination: {
+      data: [],
+      totalPages: 0,
+      currentPage: 1,
+    },
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -52,6 +57,7 @@ export const fetchCosmeticsThunkAction = createAsyncThunk(
     return data;
   }
 );
+
 export const addNewCosmeticsThunkAction = createAsyncThunk(
   "cosmetics/addNewCosmeticsThunkAction",
   async (data) => {
@@ -105,22 +111,16 @@ export const removeMultipleCosmeticsThunkAction = createAsyncThunk(
 
 export default cosmeticSlice;
 
-// export const removeCosmeticsThunkAction = createAsyncThunk(
-//   "cosmetics/removeCosmeticsThunkAction",
-//   async (data) => {
-//     let removeProductRes = await fetch(
-//       `https://json-server-psi-three.vercel.app/cosmeticsList/${data?.id}`,
-//       {
-//         method: "DELETE",
-//       }
+// export const fetchProductPaginationThunkAction = createAsyncThunk(
+//   "cosmetics/fetchProductPagination",
+//   async ({ page, limit }) => {
+//     const response = await fetch(
+//       `https://json-server-psi-three.vercel.app/cosmeticsList?_page=${page}&_limit=${limit}`
 //     );
-//     await removeProductRes.json();
-//     return data;
+//     const data = await response.json();
+//     const totalRecords = response.headers.get("X-Total-Count");
+//     const totalPages = Math.ceil(totalRecords / limit);
+
+//     return { data, totalPages, page };
 //   }
 // );
-// .addCase(removeCosmeticsThunkAction.fulfilled, (state, action) => {
-//   state.status = "idle";
-//   state.cosmetics = state.cosmetics.filter(
-//     (p) => p.id !== action.payload?.id
-//   );
-// })

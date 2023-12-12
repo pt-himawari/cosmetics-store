@@ -1,5 +1,3 @@
-import React, { useMemo, useState } from "react";
-
 import {
   Box,
   Checkbox,
@@ -14,21 +12,18 @@ import {
   TableRow,
 } from "@mui/material/";
 import Chip from "@mui/material/Chip";
-
-import EnhancedTableHead from "./EnhancedTableHead";
-import EnhancedTableToolbar from "./EnhancedTableToolbar";
-import dayjs from "dayjs";
-import { transformData } from "./dataUtils";
-import { getComparator, stableSort } from "./utils";
+import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { orderListSelector } from "../../../../redux-toolkit/selectors";
+import { formatDate, formatterCurrency, getChipStyles } from "../components";
+import EnhancedTableHead from "./EnhancedTableHead";
+import EnhancedTableToolbar from "./EnhancedTableToolbar";
+import { transformData } from "./dataUtils";
+import { getComparator, stableSort } from "./utils";
 
 export default function OrderManagement() {
   const orderList = useSelector(orderListSelector);
-
   const rows = useMemo(() => transformData(orderList), [orderList]);
-  // console.log(rows);
-
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("totalAmount");
   const [selected, setSelected] = useState([]);
@@ -83,9 +78,7 @@ export default function OrderManagement() {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-
   const isSelected = (id) => selected.indexOf(id) !== -1;
-
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -100,8 +93,7 @@ export default function OrderManagement() {
   );
 
   return (
-    // <Container maxWidth="lg" sx={{ mt: 18, mb: 4 }}>
-    <Box sx={{ width: "90%" }}>
+    <Box sx={{ width: "90%", minHeight: "90vh" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
@@ -163,35 +155,16 @@ export default function OrderManagement() {
 
                     <TableCell align="center">
                       {" "}
-                      {dayjs.unix(row.orderDate).format("DD-MM-YYYY")}
+                      {formatDate(row.orderDate)}
                     </TableCell>
                     <TableCell align="center">
-                      <Chip
-                        label={row.status}
-                        sx={{
-                          borderRadius: "5px",
-                          backgroundColor:
-                            row.status === "REFUNDED"
-                              ? "#f0443842"
-                              : row.status === "DELIVERED"
-                              ? "#10b98133"
-                              : "#f7900938",
-                          color:
-                            row.status === "REFUNDED"
-                              ? "#b42318"
-                              : row.status === "DELIVERED"
-                              ? "#0b815a"
-                              : "#b54708f7",
-                        }}
-                        // variant="outlined"
-                      />
+                      <Chip label={row.status} sx={getChipStyles(row.status)} />
                     </TableCell>
-                    {/* <TableCell align="center">
-                        {row.shipping === 0 ? "Free" : row.shipping}
-                      </TableCell> */}
 
                     <TableCell align="center">{row.totalProduct}</TableCell>
-                    <TableCell align="center">${row.totalAmount}</TableCell>
+                    <TableCell align="center">
+                      {formatterCurrency(row.totalAmount)}
+                    </TableCell>
 
                     <TableCell align="center">{row.email}</TableCell>
                   </TableRow>
@@ -234,6 +207,5 @@ export default function OrderManagement() {
         label="Dense padding"
       />
     </Box>
-    // </Container>
   );
 }

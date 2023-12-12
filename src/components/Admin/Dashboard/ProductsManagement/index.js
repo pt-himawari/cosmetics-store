@@ -1,24 +1,20 @@
-import AddIcon from "@mui/icons-material/Add";
-import { Box, Button } from "@mui/material/";
-import React, { useEffect, useState } from "react";
-// import { useTheme } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
+import { Box, Button } from "@mui/material/";
+import AddIcon from "@mui/icons-material/Add";
 import { useLocation } from "react-router-dom";
-import { fetchCosmeticsThunkAction } from "../../../../reducers/cosmeticSlice";
+import React, { useEffect, useState } from "react";
 import AddProduct from "./AddProduct";
-import EditProduct from "./EditProduct/EditProduct";
-import ProductDetails from "./EditProduct/ProductDetails";
+import EditProduct from "./EditProduct";
+import ProductDetails from "./ProductDetails";
 import ProductsTable from "./ProductsTable";
+import { fetchCosmeticsThunkAction } from "../../../../reducers/cosmeticSlice";
 
 const ProductsManagement = () => {
   const [addNew, setAddNew] = useState(false);
-  const [editProductDetails, setEditProductDetails] = useState(false);
   const [editProduct, setEditProduct] = useState(false);
-
-  // const [idProduct, setIdProduct] = useState({});
   const [selectProduct, setSelectProduct] = useState({});
+  const [editProductDetails, setEditProductDetails] = useState(false);
   const location = useLocation();
-
   useEffect(() => {
     if (location.pathname === "/productsMain") {
       setAddNew(false);
@@ -32,12 +28,10 @@ const ProductsManagement = () => {
     dispatch(fetchCosmeticsThunkAction());
   }, [dispatch, editProduct]);
   return (
-    // <Container maxWidth="lg" sx={{ mt: 14, mb: 4 }}>
     <>
-      <Box mb={4} sx={{ width: "90%" }}>
+      <Box mb={4} sx={{ width: "90%", minHeight: "90vh" }}>
         <Box
           sx={{
-            // width: "90%",
             display: "flex",
             justifyContent: "flex-end",
           }}
@@ -82,8 +76,6 @@ const ProductsManagement = () => {
         )}
       </Box>
     </>
-
-    // </Container>
   );
 };
 

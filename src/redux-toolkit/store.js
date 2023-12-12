@@ -1,8 +1,8 @@
-import { configureStore } from "@reduxjs/toolkit";
-import cosmeticSlice from "../reducers/cosmeticSlice";
-import filtersSlice from "../reducers/filtersSlice";
 import cartSlice from "../reducers/cartSlice";
 import orderSlice from "../reducers/orderSlice";
+import { configureStore } from "@reduxjs/toolkit";
+import filtersSlice from "../reducers/filtersSlice";
+import cosmeticSlice from "../reducers/cosmeticSlice";
 
 const store = configureStore({
   reducer: {

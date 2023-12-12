@@ -1,8 +1,3 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import {
   Badge,
   Box,
@@ -13,7 +8,11 @@ import {
   Typography,
   styled,
 } from "@mui/material";
+import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { cartSelector } from "../../redux-toolkit/selectors";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {

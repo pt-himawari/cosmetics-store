@@ -1,15 +1,14 @@
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
-  ListItemButton,
+  Accordion,
   ListItemText,
+  ListItemButton,
+  AccordionDetails,
+  AccordionSummary,
 } from "@mui/material";
 import React from "react";
-
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useDispatch, useSelector } from "react-redux";
 import filtersSlice from "../../../reducers/filtersSlice";
 import {
@@ -21,8 +20,6 @@ const haircareFilters = ["hairmask", "shampoo", "conditioner"];
 const Haircare = () => {
   const dispatch = useDispatch();
   const buttonValue = "haircare";
-
-  // const { category, type } = props;
   const type = useSelector(searchTypeSelector);
   const category = useSelector(searchCategorySelector);
   return (
@@ -53,7 +50,6 @@ const Haircare = () => {
               my: 0,
               fontSize: "16px",
               color: buttonValue === type ? "#CC4343" : "#242424",
-
               fontWeight: buttonValue === type ? 800 : "bold",
               justifyContent: "flex-start",
               textTransform: "capitalize",
@@ -71,12 +67,9 @@ const Haircare = () => {
             Haircare
           </Button>
         </AccordionSummary>
-        {/* <Divider /> */}
 
         <AccordionDetails
           sx={{
-            // width: "100%",
-            // marginTop: 0,
             py: 0,
             pr: 5,
             // minHeight: 32,
@@ -86,24 +79,17 @@ const Haircare = () => {
             <ListItemButton
               key={index}
               sx={{
-                // width: "100%",
                 py: 0,
                 minHeight: 32,
-                // backgroundColor: item === category ? "#fdecee" : "inherit",
               }}
               onClick={() => {
                 dispatch(filtersSlice.actions.setSearchType(buttonValue));
-
                 dispatch(filtersSlice.actions.setSearchCategory(item));
-                // console.log(item);
               }}
             >
-              {/* <ListItemIcon sx={{ color: "inherit" }}>{item.icon}</ListItemIcon> */}
               <ListItemText
                 primary={item}
                 primaryTypographyProps={{
-                  // color: "#ad1357",
-
                   color: item === category ? "#CC4343" : "#242424",
                   fontWeight: item === category ? 700 : 500,
                   fontSize: 15,
@@ -113,7 +99,6 @@ const Haircare = () => {
             </ListItemButton>
           ))}
         </AccordionDetails>
-        {/* <Divider /> */}
       </Accordion>
     </Box>
   );

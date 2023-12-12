@@ -1,20 +1,21 @@
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
-  ListItemButton,
+  Accordion,
   ListItemText,
+  ListItemButton,
+  AccordionDetails,
+  AccordionSummary,
 } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import filtersSlice from "../../../reducers/filtersSlice";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   searchCategorySelector,
   searchTypeSelector,
 } from "../../../redux-toolkit/selectors";
+
 const makeupFilters = ["lip", "eye", "face", "accessories"];
 
 const Makeup = (props) => {
@@ -22,8 +23,6 @@ const Makeup = (props) => {
   const category = useSelector(searchCategorySelector);
   const dispatch = useDispatch();
   const buttonValue = "makeup";
-
-  // const [buttonValue, setButtonValue] = useState();
 
   return (
     <Box>
@@ -37,8 +36,6 @@ const Makeup = (props) => {
               }}
             />
           }
-          // aria-controls="panel1a-content"
-          // id="panel1a-header"
           sx={{
             borderTop: "1px solid #ccc",
             py: 0,
@@ -69,42 +66,30 @@ const Makeup = (props) => {
             Makeup
           </Button>
         </AccordionSummary>
-        {/* <Divider /> */}
 
         <AccordionDetails
           sx={{
-            // width: "100%",
-            // marginTop: 0,
             py: 0,
             pr: 5,
-            // minHeight: 32,
           }}
         >
           {makeupFilters.map((item, index) => (
             <ListItemButton
               key={index}
               sx={{
-                // width: "100%",
                 py: 0,
                 minHeight: 32,
-                // backgroundColor: "#fdecee",
-                // backgroundColor: item === category ? "#fdecee" : "inherit",
               }}
               onClick={() => {
                 dispatch(filtersSlice.actions.setSearchType(buttonValue));
-
                 dispatch(filtersSlice.actions.setSearchCategory(item));
-                // console.log(item);
               }}
             >
-              {/* <ListItemIcon sx={{ color: "inherit" }}>{item.icon}</ListItemIcon> */}
               <ListItemText
                 primary={item}
                 primaryTypographyProps={{
-                  // color: "#242424",
                   fontSize: 15,
                   color: item === category ? "#CC4343" : "#242424",
-
                   fontWeight: item === category ? 700 : 500,
                   textTransform: "capitalize",
                 }}
@@ -112,7 +97,6 @@ const Makeup = (props) => {
             </ListItemButton>
           ))}
         </AccordionDetails>
-        {/* <Divider /> */}
       </Accordion>
     </Box>
   );

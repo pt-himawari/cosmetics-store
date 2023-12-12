@@ -1,19 +1,16 @@
 import {
+  Divider,
   Grid,
   List,
   ListItem,
   ListItemText,
   Typography,
-  Divider,
 } from "@mui/material";
 import * as React from "react";
 import { useSelector } from "react-redux";
-
 import { cartSelector } from "../../redux-toolkit/selectors";
-
 export default function Review() {
   const { cartDetails, cartInfo, customerInfo } = useSelector(cartSelector);
-
   const cardNumber = customerInfo.cardNumber;
   const maskedCardNumber = cardNumber
     ? cardNumber
@@ -49,7 +46,7 @@ export default function Review() {
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Shipp" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {cartInfo.shipping}$
+            {Number(cartInfo.subTotal) > 500 ? Number(0) : Number(5)}$
           </Typography>
         </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
@@ -67,9 +64,7 @@ export default function Review() {
           </Typography>
           <Typography gutterBottom>{customerInfo.fullName}</Typography>
           <Typography gutterBottom>
-            {/* const fullAddress = `${data.address}, ${data.state}, ${data.city}, ${data.country}`; */}
-
-            {`${customerInfo.address},${customerInfo.state},${customerInfo.city},${customerInfo.country}`}
+            {`${customerInfo.address}, ${customerInfo.state}, ${customerInfo.city}, ${customerInfo.country}`}
           </Typography>
           <Typography gutterBottom>{customerInfo.phone}</Typography>
         </Grid>

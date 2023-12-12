@@ -19,24 +19,26 @@ const cartSlice = createSlice({
       );
 
       if (cartItem?.id) {
-        cartItem.quantity = Number(cartItem.quantity) + 1;
-        cartItem.amount = Number(cartItem.quantity * cartItem.currentPrice);
-        // state.cartInfo.total =
+        const quantityToAdd =
+          action?.payload?.quantityCart > 1 ? action.payload.quantityCart : 1;
+
+        cartItem.quantity += quantityToAdd;
+        cartItem.amount = cartItem.quantity * cartItem.currentPrice;
       } else {
+        const quantityToAdd =
+          action?.payload?.quantityCart > 1 ? action.payload.quantityCart : 1;
         state.cartDetails.push({
           ...action.payload,
-          quantity: 1,
-          amount: action?.payload?.currentPrice,
+          quantity: quantityToAdd,
+          amount: action.payload.currentPrice * quantityToAdd,
         });
       }
 
-      let newSubTotal = state.cartDetails.reduce(
-        (preValue, curValue) =>
-          preValue + curValue.currentPrice * curValue.quantity,
+      state.cartInfo.subTotal = state.cartDetails.reduce(
+        (total, item) => total + item.currentPrice * item.quantity,
         0
       );
-      state.cartInfo.subTotal = newSubTotal;
-      state.cartInfo.total = newSubTotal + state.cartInfo.shipping;
+      state.cartInfo.total = state.cartInfo.subTotal + state.cartInfo.shipping;
     },
 
     incrementQuantity: (state, action) => {
@@ -94,7 +96,7 @@ const cartSlice = createSlice({
         subTotal: 0,
         shipping: 0,
         total: 0,
-        status: "draft",
+        status: "PENDING",
       };
       state.customerInfo = {};
     },
@@ -108,7 +110,7 @@ const cartSlice = createSlice({
           subTotal: 0,
           shipping: 0,
           total: 0,
-          status: "draft",
+          status: "PENDING",
         };
         state.cartDetails = [];
         state.customerInfo = {};

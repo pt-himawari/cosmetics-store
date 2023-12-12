@@ -1,12 +1,10 @@
-import React, { useEffect } from "react";
-import { Grid, Paper, Box } from "@mui/material";
 import Chart from "./Chart";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Grid, Paper, Box } from "@mui/material";
+import Orders from "./Orders";
 import TotalSales from "./TotalSales";
 import TotalOrders from "./TotalOrders";
-import Orders from "./Orders";
-import { useDispatch } from "react-redux";
-// import { orderListSelector } from "../../../../redux-toolkit/selectors";
-// import { cosmeticsListSelector } from "../../../../redux-toolkit/selectors";
 import { fetchOrderListThunkAction } from "../../../../reducers/orderSlice";
 import { fetchCosmeticsThunkAction } from "../../../../reducers/cosmeticSlice";
 
@@ -16,11 +14,9 @@ export default function MainContent() {
     dispatch(fetchOrderListThunkAction());
     dispatch(fetchCosmeticsThunkAction());
   }, [dispatch]);
-  // const orderList = useSelector(orderListSelector);
-  // const products = useSelector(cosmeticsListSelector);
-  // console.log(products);
+
   return (
-    <Box maxWidth="lg" sx={{ width: "90%" }}>
+    <Box maxWidth="lg" sx={{ width: "90%", minHeight: "90vh" }}>
       <Grid container spacing={3}>
         {/* Recent Deposits */}
         <Grid item xs={6} md={3} lg={3}>

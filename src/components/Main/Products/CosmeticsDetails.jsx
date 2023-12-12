@@ -1,15 +1,4 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import StarIcon from "@mui/icons-material/Star";
-import CircularProgress from "@mui/material/CircularProgress";
-import CheckIcon from "@mui/icons-material/Check";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import {
-  Accordion,
-  Fab,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
   Chip,
@@ -17,61 +6,40 @@ import {
   Grid,
   Rating,
   Stack,
-  Typography,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Alert,
-  AlertTitle,
-  Slide,
   Tab,
+  Typography,
 } from "@mui/material/";
-
-// import TabContext from "@mui/lab/TabContext";
-// import TabList from "@mui/lab/TabList";
-// import TabPanel from "@mui/lab/TabPanel";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import Tabs from "@mui/material/Tabs";
-
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import axios from "axios";
-
-import ReactMarkdown from "react-markdown";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-// import ReactHtmlParser from "react-html-parser";
 import parse from "html-react-parser";
-import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
+import StarIcon from "@mui/icons-material/Star";
+import React, { useEffect, useState, useRef } from "react";
 import RemoveIcon from "@mui/icons-material/Remove";
-
-// import { removeMultipleCosmeticsThunkAction } from "../../../../../reducers/cosmeticSlice";
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { useNavigate, useParams } from "react-router-dom";
+import cartSlice from "../../../reducers/cartSlice";
 
 const CosmeticsDetails = () => {
+  const dispatch = useDispatch();
   let { id } = useParams();
-  console.log("id", id);
-  const [cosmetics, setCosmetics] = useState();
-  const [open, setOpen] = React.useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [value, setValue] = React.useState("1");
+  const [product, setProduct] = useState();
+  const [quantity, setQuantity] = useState(1);
+  const [value, setValue] = useState("1");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const timer = React.useRef();
-  const dispatch = useDispatch();
-  React.useEffect(() => {
+  const timer = useRef();
+
+  useEffect(() => {
+    const currentTimer = timer.current;
+
     return () => {
-      clearTimeout(timer.current);
+      clearTimeout(currentTimer);
     };
   }, []);
+
   useEffect(() => {
     async function getProductById() {
       try {
@@ -79,7 +47,7 @@ const CosmeticsDetails = () => {
           `https://json-server-psi-three.vercel.app/cosmeticsList/${id}`
         );
         let data = productListRes.data; // With axios, the response data is found in .data
-        setCosmetics(data);
+        setProduct(data);
       } catch (error) {
         console.error("Error fetching product:", error);
         // Handle error appropriately
@@ -88,21 +56,18 @@ const CosmeticsDetails = () => {
     getProductById();
   }, [id]);
 
-  const productWithId = { ...cosmetics };
-
-  const handleRemoveProduct = () => {
-    // if (!isLoading) {
-    //   setIsLoading(true);
-    //   const ids = [selectProduct.id];
-    //   dispatch(removeMultipleCosmeticsThunkAction(ids));
-    //   timer.current = window.setTimeout(() => {
-    //     setIsCompleted(true);
-    //     setIsLoading(false);
-    //     window.setTimeout(() => {
-    //       setEditProductDetails(false);
-    //     }, 1000);
-    //   }, 2000);
-    // }
+  const cosmetics = { ...product };
+  const navigate = useNavigate();
+  const handleAddCart = () => {
+    const newProduct = { ...cosmetics, quantityCart: quantity };
+    dispatch(cartSlice.actions.addCart(newProduct));
+    navigate("/");
+  };
+  const handleBuyNow = () => {
+    const newProduct = { ...cosmetics, quantityCart: quantity };
+    console.log(quantity);
+    dispatch(cartSlice.actions.addCart(newProduct));
+    navigate("/cartPage");
   };
 
   return (
@@ -110,6 +75,7 @@ const CosmeticsDetails = () => {
       sx={{
         mt: 15,
         mb: 10,
+        minHeight: "100vh",
       }}
     >
       <Box
@@ -161,7 +127,7 @@ const CosmeticsDetails = () => {
                     margin: "auto",
                     display: "block",
                   }}
-                  src={productWithId.image}
+                  src={cosmetics.image}
                   alt="Paella dish"
                 ></Box>
                 <Box
@@ -175,7 +141,7 @@ const CosmeticsDetails = () => {
                     margin: "auto",
                     display: "block",
                   }}
-                  src={productWithId.image}
+                  src={cosmetics.image}
                   alt="Paella dish"
                 ></Box>
                 <Box
@@ -189,7 +155,7 @@ const CosmeticsDetails = () => {
                     margin: "auto",
                     display: "block",
                   }}
-                  src={productWithId.image}
+                  src={cosmetics.image}
                   alt="Paella dish"
                 ></Box>
               </Stack>
@@ -213,7 +179,7 @@ const CosmeticsDetails = () => {
                   margin: "auto",
                   display: "block",
                 }}
-                src={productWithId.image}
+                src={cosmetics.image}
                 alt="Paella dish"
               ></Box>
             </Grid>
@@ -230,7 +196,7 @@ const CosmeticsDetails = () => {
               }}
             >
               <Box mb={2}>
-                {productWithId.quantity !== 0 ? (
+                {cosmetics.quantity !== 0 ? (
                   <Chip
                     label="In Stock"
                     sx={{
@@ -261,7 +227,7 @@ const CosmeticsDetails = () => {
                   textTransform: "uppercase",
                 }}
               >
-                {productWithId.brand}
+                {cosmetics.brand}
               </Typography>
               <Typography
                 variant="h4"
@@ -272,7 +238,7 @@ const CosmeticsDetails = () => {
                   color: "#121f43",
                 }}
               >
-                {productWithId.name}
+                {cosmetics.name}
               </Typography>
               <Box
                 mb={2}
@@ -282,7 +248,7 @@ const CosmeticsDetails = () => {
                 }}
               >
                 <Chip
-                  label={productWithId.type}
+                  label={cosmetics.type}
                   sx={{
                     textTransform: "capitalize",
                     backgroundColor: "#f0004715",
@@ -291,7 +257,7 @@ const CosmeticsDetails = () => {
                   }}
                 />
                 <Chip
-                  label={productWithId.category}
+                  label={cosmetics.category}
                   sx={{
                     mx: 3,
                     textTransform: "capitalize",
@@ -307,7 +273,7 @@ const CosmeticsDetails = () => {
                       color: "#FFB000",
                     }}
                     name="text-feedback"
-                    value={Number(productWithId.star)}
+                    value={Number(cosmetics.star)}
                     readOnly
                     precision={0.5}
                     emptyIcon={
@@ -338,10 +304,10 @@ const CosmeticsDetails = () => {
                     letterSpacing: "2px",
                     fontWeight: 600,
                     // textDecoration:
-                    //   productWithId.currentPrice === 0 ? "" : "line-through",
+                    //   cosmetics.currentPrice === 0 ? "" : "line-through",
                   }}
                 >
-                  {`$${productWithId.currentPrice}`}
+                  {`$${cosmetics.currentPrice}`}
                 </Typography>
               </Box>
 
@@ -372,11 +338,33 @@ const CosmeticsDetails = () => {
                     border: "2px solid #b2c9dc",
                   }}
                 >
-                  <Button startIcon={<AddIcon />} variant="text"></Button>
+                  <Button
+                    startIcon={<AddIcon />}
+                    variant="text"
+                    onClick={() => {
+                      setQuantity(quantity + 1);
+                      // dispatch(cartSlice.actions.addCart(cosmetics));
+                      // dispatch(
+                      //   cartSlice.actions.incrementQuantity(cosmetics)
+                      // );
+                    }}
+                  ></Button>
 
-                  {productWithId.quantity}
+                  {quantity}
 
-                  <Button startIcon={<RemoveIcon />} variant="text"></Button>
+                  <Button
+                    startIcon={<RemoveIcon />}
+                    variant="text"
+                    onClick={() => {
+                      if (quantity > 1) {
+                        setQuantity(quantity - 1);
+                      }
+                      // dispatch(cartSlice.actions.addCart(cosmetics));
+                      // dispatch(
+                      //   cartSlice.actions.incrementQuantity(cosmetics)
+                      // );
+                    }}
+                  ></Button>
                 </Box>
               </Box>
               <Stack ml={4} mt={3} direction="row" spacing={3}>
@@ -386,15 +374,19 @@ const CosmeticsDetails = () => {
                   sx={{
                     backgroundColor: "#ab4aba",
                   }}
+                  onClick={handleAddCart}
                 >
                   Add to cart
                 </Button>
                 <Button
+                  // component={Link}
+                  // to={"/cartPage"}
                   variant="contained"
                   color="success"
                   sx={{
                     backgroundColor: "#399c3e",
                   }}
+                  onClick={handleBuyNow}
                 >
                   Buy Now
                 </Button>
@@ -453,7 +445,7 @@ const CosmeticsDetails = () => {
                 </Box>
                 <TabPanel value="1">
                   <Typography>
-                    {parse(String(productWithId.description))}
+                    {parse(String(cosmetics.description))}
                   </Typography>
                 </TabPanel>
                 <TabPanel value="2">Item Two</TabPanel>

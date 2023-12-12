@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Table,
   TableBody,
@@ -8,29 +7,20 @@ import {
   Typography,
   TableContainer,
 } from "@mui/material/";
+import React, { useMemo } from "react";
 import Chip from "@mui/material/Chip";
-
-import dayjs from "dayjs";
 import { useSelector } from "react-redux";
+import { getChipStyles, formatDate, formatterCurrency } from "../components";
 import { orderListSelector } from "../../../../redux-toolkit/selectors";
-// Generate Order Data
 
-// function preventDefault(event) {
-//   event.preventDefault();
-// }
-
-export default function Orders() {
+const Orders = React.memo(() => {
   const orderList = useSelector(orderListSelector);
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  });
-  // Create a copy of the array and then sort it
-  const sortedOrderList = [...orderList].sort(
-    (a, b) => b.orderInfo.orderDate - a.orderInfo.orderDate
-  );
-  const fourRecentOrders = sortedOrderList.slice(0, 4);
+
+  const fourRecentOrders = useMemo(() => {
+    return [...orderList]
+      .sort((a, b) => b.orderInfo.orderDate - a.orderInfo.orderDate)
+      .slice(0, 4);
+  }, [orderList]);
   return (
     <>
       <Typography
@@ -105,7 +95,7 @@ export default function Orders() {
             {fourRecentOrders.map((order) => (
               <TableRow key={order.orderId}>
                 <TableCell align="left">
-                  {dayjs.unix(order.orderInfo.orderDate).format("DD-MM-YYYY")}
+                  {formatDate(order.orderInfo.orderDate)}
                 </TableCell>
                 <TableCell
                   align="left"
@@ -119,21 +109,7 @@ export default function Orders() {
                 <TableCell align="center">
                   <Chip
                     label={order.orderInfo.status}
-                    sx={{
-                      backgroundColor:
-                        order.orderInfo.status === "REFUNDED"
-                          ? "#f0443842"
-                          : order.orderInfo.status === "DELIVERED"
-                          ? "#10b98133"
-                          : "#f7900938",
-                      color:
-                        order.orderInfo.status === "REFUNDED"
-                          ? "#b42318"
-                          : order.orderInfo.status === "DELIVERED"
-                          ? "#0b815a"
-                          : "#b54708f7",
-                    }}
-                    // variant="outlined"
+                    sx={getChipStyles(order.orderInfo.status)}
                   />
                 </TableCell>
                 <TableCell align="center">{order.customerInfo.email}</TableCell>
@@ -142,16 +118,14 @@ export default function Orders() {
                   .toString()
                   .slice(-4)}`}</TableCell>
                 <TableCell align="right">
-                  {formatter.format(order.orderInfo.total)}
+                  {formatterCurrency(order.orderInfo.total)}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-        {/* <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-          See more orders
-        </Link> */}
       </TableContainer>
     </>
   );
-}
+});
+export default Orders;

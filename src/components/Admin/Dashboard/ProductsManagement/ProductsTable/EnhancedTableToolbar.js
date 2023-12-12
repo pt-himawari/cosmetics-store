@@ -4,6 +4,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Alert,
   AlertTitle,
+  Autocomplete,
   Box,
   Button,
   Dialog,
@@ -12,7 +13,11 @@ import {
   DialogContentText,
   Fab,
   IconButton,
+  ListItemText,
+  Menu,
+  MenuItem,
   Slide,
+  TextField,
   Toolbar,
   Tooltip,
   Typography,
@@ -20,22 +25,29 @@ import {
 } from "@mui/material/";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { removeMultipleCosmeticsThunkAction } from "../../../../../reducers/cosmeticSlice";
+import filtersSlice from "../../../../../reducers/filtersSlice";
+import { cosmeticsListSelector } from "../../../../../redux-toolkit/selectors";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+const filters = ["All", "skincare", "makeup", "haircare"];
+
 function EnhancedTableToolbar(props) {
   const { numSelected, selected, setSelected } = props;
-  console.log(props);
+  const products = useSelector(cosmeticsListSelector);
+  const topProduct = products.slice(0, 10);
+  console.log(topProduct);
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [searchText, setSearchText] = useState("");
   const timer = React.useRef();
-
-  const removeMultipleProduct = () => {};
+  const [anchorElUser, setAnchorElUser] = useState("");
   useEffect(() => {
     return () => {
       clearTimeout(timer.current);
@@ -45,8 +57,6 @@ function EnhancedTableToolbar(props) {
     if (!isLoading) {
       setIsLoading(true);
       dispatch(removeMultipleCosmeticsThunkAction(selected));
-
-      // setSelected([]);
       timer.current = window.setTimeout(() => {
         setIsCompleted(true);
         setIsLoading(false);
@@ -62,9 +72,12 @@ function EnhancedTableToolbar(props) {
   return (
     <Toolbar
       sx={{
+        gap: "5px",
         borderBottom: "2px solid #e0e0e0",
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
+        alignItems: "center",
+        justifyContent: "space-between",
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
             alpha(
@@ -76,7 +89,7 @@ function EnhancedTableToolbar(props) {
     >
       {numSelected > 0 ? (
         <Typography
-          sx={{ flex: "1 1 100%" }}
+          sx={{ flex: "1" }}
           color="inherit"
           variant="subtitle1"
           component="div"
@@ -85,7 +98,7 @@ function EnhancedTableToolbar(props) {
         </Typography>
       ) : (
         <Typography
-          sx={{ flex: "1 1 100%", fontWeight: 800, color: "#65636d" }}
+          sx={{ flex: "1", fontWeight: 800, color: "#65636d" }}
           variant="h6"
           id="tableTitle"
           component="div"
@@ -94,6 +107,39 @@ function EnhancedTableToolbar(props) {
         </Typography>
       )}
 
+      <Autocomplete
+        sx={{ width: 300 }}
+        freeSolo
+        size="small"
+        id="free-solo-2-demo"
+        disableClearable
+        options={topProduct.map((option) => option.name)}
+        inputValue={searchText}
+        onInputChange={(event, newInputValue) => {
+          setSearchText(newInputValue);
+        }}
+        renderInput={(params) => (
+          <TextField
+            color="secondary"
+            {...params}
+            label="Search input"
+            InputProps={{
+              ...params.InputProps,
+              type: "search",
+              onKeyDown: (event) => {
+                if (event.key === "Enter") {
+                  // Xử lý sự kiện khi Enter được nhấn
+                  dispatch(
+                    filtersSlice.actions.setSearchText(event.target.value)
+                  );
+                  setSearchText("");
+                }
+              },
+            }}
+          />
+        )}
+      />
+      {/* </Box> */}
       {numSelected > 0 ? (
         <>
           <Tooltip title="Delete">
@@ -122,7 +168,6 @@ function EnhancedTableToolbar(props) {
                 width: "450px",
               }}
             >
-              {/* <CircularProgress color="success" /> */}
               <DialogContentText
                 id="alert-dialog-slide-description"
                 sx={{
@@ -201,10 +246,49 @@ function EnhancedTableToolbar(props) {
       ) : (
         <>
           <Tooltip title="Filter list">
-            <IconButton>
+            <IconButton
+              color="secondary"
+              onClick={(event) => setAnchorElUser(event.currentTarget)}
+            >
               <FilterListIcon />
             </IconButton>
           </Tooltip>
+          <Menu
+            sx={{ mt: "47px" }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorElUser)}
+            onClose={() => setAnchorElUser(null)}
+          >
+            {filters.map((filter) => (
+              <MenuItem
+                onClick={() => {
+                  dispatch(filtersSlice.actions.setSearchType(filter));
+                  // setType(filter);
+                  setAnchorElUser(null);
+                }}
+                key={filter}
+              >
+                <ListItemText
+                  sx={{
+                    color: "#121f43",
+                    textTransform: "capitalize",
+                  }}
+                >
+                  {filter}
+                </ListItemText>
+              </MenuItem>
+            ))}
+          </Menu>
         </>
       )}
     </Toolbar>

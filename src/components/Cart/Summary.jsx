@@ -8,9 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import * as React from "react";
-import { Link } from "react-router-dom";
-
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { cartSelector } from "../../redux-toolkit/selectors";
 
 const Summary = () => {
@@ -25,7 +24,6 @@ const Summary = () => {
           height: "auto",
           boxShadow: 3,
           borderRadius: "10px",
-          // backgroundColor: "#f5727314",
         }}
       >
         <Typography
@@ -76,7 +74,7 @@ const Summary = () => {
               color: "#CC4343",
             }}
           >
-            {Number(cartInfo.subTotal) > 2000 ? "0" : cartInfo.shipping}$
+            {Number(cartInfo.subTotal) > Number(500) ? 0 : 5}$
           </Typography>
         </Stack>
         <Divider />

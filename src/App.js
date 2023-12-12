@@ -1,11 +1,11 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
-import CosmeticsPage from "./pages/CosmeticsPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import { Routes, Route } from "react-router-dom";
+import CosmeticsPage from "./pages/CosmeticsPage";
+import ProductsPage from "./pages/Admin/ProductsPage";
 import DashboardPage from "./pages/Admin/DashboardPage";
 import OrderListPage from "./pages/Admin/OrderListPage";
-import ProductsPage from "./pages/Admin/ProductsPage";
 import CosmeticsDetailsPage from "./pages/CosmeticsDetailsPage";
 import "react-toastify/dist/ReactToastify.css";
 

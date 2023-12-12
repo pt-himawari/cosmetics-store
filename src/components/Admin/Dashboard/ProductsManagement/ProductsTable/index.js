@@ -13,28 +13,24 @@ import {
   TableRow,
 } from "@mui/material/";
 import Chip from "@mui/material/Chip";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import EnhancedTableHead from "./EnhancedTableHead";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
-
 import { useSelector } from "react-redux";
-import { cosmeticsListSelector } from "../../../../../redux-toolkit/selectors";
+import { filtersCosmeticsSelector } from "../../../../../redux-toolkit/selectors";
 import { transformData } from "./dataUtils";
 import { getComparator, stableSort } from "./utils";
 
 export default function ProductsTable(props) {
   const { setEditProductDetails, setSelectProduct } = props;
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("currentPrice");
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const products = useSelector(cosmeticsListSelector);
-
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("currentPrice");
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const products = useSelector(filtersCosmeticsSelector);
   const rows = useMemo(() => transformData(products), [products]);
-  console.log(rows);
-  // console.log(rows);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -79,13 +75,11 @@ export default function ProductsTable(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
-
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -98,8 +92,6 @@ export default function ProductsTable(props) {
       ),
     [order, orderBy, page, rowsPerPage, rows]
   );
-
-  console.log(visibleRows);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -163,7 +155,6 @@ export default function ProductsTable(props) {
                         onClick={() => {
                           setSelectProduct({ id: row.id });
                           setEditProductDetails(true);
-                          // console.info("I'm a button.");
                         }}
                       >
                         #{row.id}
@@ -221,10 +212,6 @@ export default function ProductsTable(props) {
                     >
                       {row.category}
                     </TableCell>
-
-                    {/* <TableCell align="center">
-                        {row.shipping === 0 ? "Free" : row.shipping}
-                      </TableCell> */}
                     <TableCell
                       align="center"
                       sx={{

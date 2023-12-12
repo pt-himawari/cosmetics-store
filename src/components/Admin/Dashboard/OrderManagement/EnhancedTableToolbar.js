@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Toolbar,
   Typography,
@@ -6,9 +5,10 @@ import {
   Tooltip,
   alpha,
 } from "@mui/material/";
+import React from "react";
+import PropTypes from "prop-types";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import PropTypes from "prop-types";
 
 function EnhancedTableToolbar(props) {
   const { numSelected } = props;

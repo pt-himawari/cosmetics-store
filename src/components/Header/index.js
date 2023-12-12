@@ -1,91 +1,28 @@
-// import React from "react";
-// import { AppBar, Container, Stack } from "@mui/material";
-// import Cart from "./CartIcon";
-// import Logo from "./Logo";
-// import NavBar from "./NavBar";
-// import User from "./User";
-
-// const Header = () => {
-//   return (
-//     <>
-//       <AppBar
-//         position="fixed"
-//         sx={{
-//           bgcolor: "#fff",
-//           height: "60px",
-//         }}
-//       >
-//         <Container>
-//           <Stack
-//             alignItems="center"
-//             sx={{ height: "60px", paddingLeft: "10px" }}
-//             direction="row"
-//             justifyContent="space-between"
-//           >
-//             {/* logo */}
-//             <Logo />
-//             {/* navbar */}
-//             <NavBar />
-//             {/* userlogo , cartitem */}
-//             <Stack direction="row" spacing={2}>
-//               {/* cart */}
-//               <Cart />
-//               {/*  user avatar */}
-//               <User />
-//             </Stack>
-//           </Stack>
-//         </Container>
-//       </AppBar>
-//     </>
-//   );
-// };
-// export default Header;
-
-import * as React from "react";
-import { AppBar, Container, Stack } from "@mui/material";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+import ClearIcon from "@mui/icons-material/Clear";
 import MenuIcon from "@mui/icons-material/Menu";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import { AppBar, Container, Stack, Box, IconButton } from "@mui/material";
+import { Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Cart from "./CartIcon";
 import Logo from "./Logo";
 import NavBar from "./NavBar";
 import User from "./User";
-import { Link } from "react-router-dom";
-import ClearIcon from "@mui/icons-material/Clear";
-
 const pages = [
   { label: "Home", value: "/" },
   { label: "About", value: "/" },
   { label: "Shop", value: "/" },
   { label: "Products", value: "/" },
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Header() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
@@ -99,7 +36,6 @@ function Header() {
     >
       <Container>
         <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
           {/* logo */}
           <Logo sx={{ display: { xs: "none", md: "flex" } }} />
           <Typography
@@ -133,11 +69,14 @@ function Header() {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleOpenNavMenu}
+              onClick={
+                anchorElNav !== null ? handleCloseNavMenu : handleOpenNavMenu
+              }
               color="error"
             >
               {anchorElNav !== null ? <ClearIcon /> : <MenuIcon />}
             </IconButton>
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -151,13 +90,11 @@ function Header() {
                 horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
-              // open={true}
               onClose={handleCloseNavMenu}
               sx={{
                 top: "45px",
                 left: "8px",
                 display: { xs: "block", md: "none" },
-                // width: "60%", // Set width to 60%
               }}
               slotProps={{
                 paper: {
@@ -214,43 +151,12 @@ function Header() {
 
           {/* nav */}
           <NavBar />
-
           <Stack direction="row" spacing={2} sx={{ flexGrow: 0 }}>
             {/* cart icon */}
             <Cart />
             {/* user */}
             <User />
           </Stack>
-
-          {/* <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
         </Toolbar>
       </Container>
     </AppBar>

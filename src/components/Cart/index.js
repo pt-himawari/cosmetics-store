@@ -1,13 +1,11 @@
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import React from "react";
 import { Link } from "react-router-dom";
-
-import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
-
 import { useSelector } from "react-redux";
-import { cartSelector } from "../../redux-toolkit/selectors";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import CartInfo from "./CartInfo";
 import Summary from "./Summary";
+import { cartSelector } from "../../redux-toolkit/selectors";
 
 const Cart = () => {
   const { cartDetails } = useSelector(cartSelector);
@@ -25,13 +23,7 @@ const Cart = () => {
           <Summary />
         </Grid>
       ) : (
-        <Stack
-          // direction="row"
-          spacing={7}
-          alignItems="center"
-          // justifyContent="space-between"
-          height="38vh"
-        >
+        <Stack spacing={7} alignItems="center" height="38vh">
           <Box></Box>
           <Typography
             variant="h4"
@@ -53,14 +45,12 @@ const Cart = () => {
               },
             }}
           >
-            {/* <Link href="#" underline="hover"> */}
             <ArrowBackIcon
               sx={{
                 mr: 1,
               }}
             />
             Continue Shopping
-            {/* </Link> */}
           </Button>
         </Stack>
       )}

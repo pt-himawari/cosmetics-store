@@ -1,19 +1,18 @@
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
-  FormControl,
-  FormControlLabel,
   Radio,
+  Accordion,
   RadioGroup,
   Typography,
+  FormControl,
+  FormControlLabel,
+  AccordionDetails,
+  AccordionSummary,
 } from "@mui/material";
-import { pink } from "@mui/material/colors";
 import React, { useState } from "react";
-
 import { useDispatch } from "react-redux";
+import { pink } from "@mui/material/colors";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import filtersSlice from "../../../reducers/filtersSlice";
 
 const prices = [
@@ -40,7 +39,6 @@ const prices = [
 ];
 const Price = () => {
   const [selectedValue, setSelectedValue] = useState("a");
-
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
@@ -54,7 +52,6 @@ const Price = () => {
   });
 
   const dispatch = useDispatch();
-  // const currenPrice = useSelector(priceSelector);
 
   return (
     <Box>

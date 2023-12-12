@@ -1,15 +1,14 @@
-import React, { lazy, useState } from "react";
 import {
-  Box,
-  Tooltip,
-  IconButton,
   Avatar,
-  Menu,
-  MenuItem,
-  Typography,
+  Box,
+  IconButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
+  Tooltip,
 } from "@mui/material";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutlined";
@@ -39,8 +38,6 @@ const User = () => {
     <Box sx={{}}>
       <Tooltip title="Open settings">
         <IconButton
-          // component={Link}
-          // to={"/dashboard"}
           onClick={(event) => setAnchorElUser(event.currentTarget)}
           sx={{ p: 0 }}
         >
@@ -67,7 +64,6 @@ const User = () => {
           <MenuItem key={setting.label} component={Link} to={setting.to}>
             <ListItemIcon>{setting.value}</ListItemIcon>
             <ListItemText>{setting.label}</ListItemText>
-            {/* <Typography textAlign="center">{setting.}</Typography> */}
           </MenuItem>
         ))}
       </Menu>

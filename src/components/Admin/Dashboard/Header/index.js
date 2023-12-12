@@ -1,13 +1,12 @@
 import React from "react";
-import { styled } from "@mui/material/styles";
-import { Toolbar, Typography, IconButton, Badge } from "@mui/material";
-import MuiAppBar from "@mui/material/AppBar";
-import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { Toolbar, Typography, IconButton, Badge } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { styled } from "@mui/material/styles";
+import MuiAppBar from "@mui/material/AppBar";
 import User from "./User";
 
 const drawerWidth = 240;
-
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -33,14 +32,11 @@ export default function Header({ open, toggleDrawer }) {
       position="absolute"
       open={open}
       sx={{
-        // width: "100%",
         backgroundColor: "white",
       }}
     >
       <Toolbar
         sx={{
-          // width: "100%",
-
           pr: "-24px", // keep right padding when drawer closed
         }}
       >
