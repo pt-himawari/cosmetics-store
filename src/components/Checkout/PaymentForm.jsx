@@ -59,7 +59,7 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
     mode: "onBlur",
     criteriaMode: "all",
   });
-  const { isDirty, isValid, errors } = formState;
+  const { errors } = formState;
 
   const dispatch = useDispatch();
 
@@ -185,7 +185,7 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
               Back
             </Button>
             <Button
-              disabled={!isDirty || !isValid}
+              // disabled={!isDirty || !isValid}
               type="button"
               variant="contained"
               color="secondary"
