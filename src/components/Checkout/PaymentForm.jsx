@@ -54,7 +54,6 @@ TextMaskCustom.propTypes = {
 
 export default function PaymentForm({ activeStep, setActiveStep }) {
   const { customerInfo } = useSelector(cartSelector);
-  console.log(customerInfo);
 
   const { register, handleSubmit, formState } = useForm({
     mode: "onBlur",
@@ -65,7 +64,6 @@ export default function PaymentForm({ activeStep, setActiveStep }) {
   const dispatch = useDispatch();
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
     const formData = {
       cardName: data.cardName,
       cardNumber: data.cardNumber,

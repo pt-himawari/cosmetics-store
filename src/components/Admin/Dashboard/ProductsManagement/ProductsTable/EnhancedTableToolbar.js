@@ -40,7 +40,6 @@ function EnhancedTableToolbar(props) {
   const { numSelected, selected, setSelected } = props;
   const products = useSelector(cosmeticsListSelector);
   const topProduct = products.slice(0, 10);
-  console.log(topProduct);
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = useState(false);

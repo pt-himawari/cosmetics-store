@@ -75,7 +75,6 @@ const Brands = () => {
               }}
               onClick={() => {
                 dispatch(filtersSlice.actions.setSearchBrand(item));
-                // console.log(item);
               }}
             >
               <ListItemText

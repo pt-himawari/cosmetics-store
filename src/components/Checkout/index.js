@@ -44,7 +44,6 @@ export default function Checkout() {
   }, []);
   const [activeStep, setActiveStep] = React.useState(0);
   const [id, setID] = React.useState("");
-  console.log(cart);
   const handleCheckoutCart = () => {
     const shippingCost =
       Number(cart.cartInfo.subTotal) > 500 ? Number(0) : Number(5);

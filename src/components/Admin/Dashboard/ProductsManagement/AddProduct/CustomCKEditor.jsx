@@ -32,9 +32,7 @@ const CustomCKEditor = ({ Controller, control, name, errors }) => {
                 field.onChange(data); // Cập nhật trạng thái form với dữ liệu mới
               }}
               onBlur={field.onBlur} // Xử lý sự kiện onBlur
-              onFocus={(event, editor) => {
-                console.log("Focus.", editor);
-              }}
+              onFocus={(event, editor) => {}}
             />
           )}
         />

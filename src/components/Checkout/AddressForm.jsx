@@ -7,7 +7,6 @@ import { cartSelector } from "../../redux-toolkit/selectors";
 
 export default function AddressForm({ activeStep, setActiveStep }) {
   const { customerInfo } = useSelector(cartSelector);
-  console.log(customerInfo);
 
   const { register, handleSubmit, formState } = useForm({
     mode: "onBlur",

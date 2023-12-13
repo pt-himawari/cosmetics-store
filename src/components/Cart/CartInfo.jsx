@@ -279,7 +279,6 @@ const CartInfo = () => {
               variant="contained"
               color="error"
               onClick={() => {
-                console.log(cart);
                 dispatch(cartSlice.actions.removeCartItem(cart));
                 setOpen(false);
               }}

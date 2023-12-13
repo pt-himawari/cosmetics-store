@@ -66,7 +66,6 @@ const CosmeticsDetails = () => {
   };
   const handleBuyNow = () => {
     const newProduct = { ...cosmetics, quantityCart: quantity };
-    console.log(quantity);
     dispatch(cartSlice.actions.addCart(newProduct));
     navigate("/cartPage");
   };

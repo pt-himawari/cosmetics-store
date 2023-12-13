@@ -15,7 +15,7 @@ import { cartSelector } from "../../redux-toolkit/selectors";
 
 const Summary = () => {
   const { cartInfo } = useSelector(cartSelector);
-  console.log(cartInfo);
+
   return (
     <Grid item xs={12} md={3}>
       <Box
