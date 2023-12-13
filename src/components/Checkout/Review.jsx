@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import { useSelector } from "react-redux";
+import formatterCurrency from "../common/formatterCurrency";
 import { cartSelector } from "../../redux-toolkit/selectors";
 export default function Review() {
   const { cartDetails, cartInfo, customerInfo } = useSelector(cartSelector);
@@ -40,19 +41,23 @@ export default function Review() {
               secondary={cart.category}
               sx={{ textTransform: "capitalize" }}
             />
-            <Typography variant="body2">{cart.amount}$</Typography>
+            <Typography variant="body2">
+              {formatterCurrency(cart.amount)}
+            </Typography>
           </ListItem>
         ))}
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Shipp" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {Number(cartInfo.subTotal) > 500 ? Number(0) : Number(5)}$
+            {Number(cartInfo.subTotal) > 500
+              ? formatterCurrency(0)
+              : formatterCurrency(5)}
           </Typography>
         </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {cartInfo.total}$
+            {formatterCurrency(cartInfo.total)}
           </Typography>
         </ListItem>
       </List>

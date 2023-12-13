@@ -15,29 +15,44 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
-import * as React from "react";
-import { useSelector, useDispatch } from "react-redux";
+
+import Slide from "@mui/material/Slide";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { cartSelector } from "../../redux-toolkit/selectors";
+import { useSelector, useDispatch } from "react-redux";
 import cartSlice from "../../reducers/cartSlice";
+import formatterCurrency from "../common/formatterCurrency";
+import { cartSelector } from "../../redux-toolkit/selectors";
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const headCells = [
-  { id: "item", label: "Item" },
-  { id: "unitPrice", label: "Unit Price" },
-  { id: "quantity", label: "Quantity" },
-  { id: "finalPrice", label: "Final Price" },
-  { id: "remove", label: "Remove" },
+  { id: "item", label: "Item", align: "" },
+  { id: "unitPrice", label: "Unit Price", align: "right" },
+  { id: "quantity", label: "Quantity", align: "center" },
+  { id: "finalPrice", label: "Final Price", align: "right" },
+  { id: "remove", label: "Remove", align: "center" },
 ];
 const CartInfo = () => {
   const dispatch = useDispatch();
   const { cartInfo, cartDetails } = useSelector(cartSelector);
+
+  const [open, setOpen] = useState(false);
+  const [cart, setCart] = useState({});
+
   const totalQuantity = cartDetails.reduce((accumulator, currentValue) => {
     return accumulator + currentValue.quantity;
   }, 0);
 
   return (
-    <Grid item xs={9}>
+    <Grid item xs={12} md={9}>
       <Typography
         variant="h4"
         sx={{
@@ -48,41 +63,32 @@ const CartInfo = () => {
         Shopping Cart
       </Typography>
       <Box sx={{ width: "100%" }}>
-        {/* <Paper sx={{ x, mb: 2 }}> */}
-
         <TableContainer sx={{}}>
           <Table
             sx={{
               width: "100%",
-              // p: "100px",
             }}
             aria-labelledby="tableTitle"
             size="medium"
-            // {dense ? "small" : "medium"}
           >
             <TableHead
               sx={{
                 borderTop: "1px solid #ccc",
-                // fontWeight: 500,
+
                 color: "#f57273c4",
-                // color: "#FFC5C5",
-                // color: "#CC4343",
+
                 fontSize: "1rem",
-                // backgroundColor: "#FFEFE8",
               }}
             >
               <TableRow>
                 {headCells.map((headCell) => (
                   <TableCell
-                    align={headCell.id === "item" ? "" : "center"}
+                    align={headCell.align}
                     key={headCell.id}
                     sx={{
-                      // fontWeight: 500,
                       color: "#f57273c4",
-                      // color: "#FFC5C5",
-                      // color: "#CC4343",
+
                       fontSize: "1rem",
-                      // backgroundColor: "#FFEFE8",
                     }}
                   >
                     {headCell.label}
@@ -98,8 +104,6 @@ const CartInfo = () => {
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        //   fontWeight: 600,
-                        //   color: "#242424",
                       }}
                     >
                       {/* Hình ảnh sản phẩm */}
@@ -120,17 +124,17 @@ const CartInfo = () => {
                     </Box>
                   </TableCell>
 
-                  <TableCell align="center">
+                  <TableCell align="right">
                     <Typography
                       sx={{
                         fontWeight: 600,
                         color: "#242424",
                       }}
                     >
-                      {cart.currentPrice}$
+                      {formatterCurrency(cart.currentPrice)}
                     </Typography>
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="right">
                     <Stack
                       direction="row"
                       justifyContent="center"
@@ -139,11 +143,10 @@ const CartInfo = () => {
                     >
                       <IconButton
                         onClick={() => {
-                          dispatch(cartSlice.actions.incrementQuantity(cart));
+                          dispatch(cartSlice.actions.decrementQuantity(cart));
                         }}
                       >
-                        <AddIcon />
-                        {/* <AddCircleOutlineIcon /> */}
+                        <RemoveIcon />
                       </IconButton>
                       <Typography
                         sx={{
@@ -153,32 +156,31 @@ const CartInfo = () => {
                       >
                         {cart.quantity}
                       </Typography>
-
                       <IconButton
                         onClick={() => {
-                          dispatch(cartSlice.actions.decrementQuantity(cart));
+                          dispatch(cartSlice.actions.incrementQuantity(cart));
                         }}
                       >
-                        <RemoveIcon />
-                        {/* <AddCircleOutlineIcon /> */}
+                        <AddIcon />
                       </IconButton>
                     </Stack>
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="right">
                     <Typography
                       sx={{
                         fontWeight: 600,
                         color: "#242424",
                       }}
                     >
-                      {cart.amount}$
+                      {formatterCurrency(cart.amount)}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
                     {/* Replace with your remove icon or button */}
                     <IconButton
                       onClick={() => {
-                        dispatch(cartSlice.actions.removeCartItem(cart));
+                        setCart(cart);
+                        setOpen(true);
                       }}
                     >
                       <CancelIcon
@@ -188,7 +190,6 @@ const CartInfo = () => {
                         }}
                       />
                     </IconButton>
-                    {/* <AddCircleOutlineIcon /> */}
                   </TableCell>
                 </TableRow>
               ))}
@@ -239,7 +240,7 @@ const CartInfo = () => {
                       >
                         Subtotal ( <strong>{totalQuantity} </strong>
                         items ):
-                        <strong> {cartInfo.subTotal}$</strong>
+                        <strong> {formatterCurrency(cartInfo.subTotal)}</strong>
                       </Typography>
                     </Box>
                   </Box>
@@ -248,6 +249,45 @@ const CartInfo = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={() => {
+            setOpen(false);
+          }}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>Confirm removal</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              {"Are you sure you want to remove product"}
+              <strong> {cart.name}</strong>
+              {"from your cart?"}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => {
+                console.log(cart);
+                dispatch(cartSlice.actions.removeCartItem(cart));
+                setOpen(false);
+              }}
+            >
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </Grid>
   );

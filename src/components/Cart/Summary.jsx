@@ -10,13 +10,14 @@ import {
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import formatterCurrency from "../common/formatterCurrency";
 import { cartSelector } from "../../redux-toolkit/selectors";
 
 const Summary = () => {
   const { cartInfo } = useSelector(cartSelector);
   console.log(cartInfo);
   return (
-    <Grid item xs={3}>
+    <Grid item xs={12} md={3}>
       <Box
         py={6}
         px={3}
@@ -53,7 +54,7 @@ const Summary = () => {
               color: "#CC4343",
             }}
           >
-            {cartInfo.subTotal}$
+            {formatterCurrency(cartInfo.subTotal)}
           </Typography>
         </Stack>
         <Stack direction="row" justifyContent="space-between" mb={4}>
@@ -74,7 +75,9 @@ const Summary = () => {
               color: "#CC4343",
             }}
           >
-            {Number(cartInfo.subTotal) > Number(500) ? 0 : 5}$
+            {Number(cartInfo.subTotal) > Number(500)
+              ? formatterCurrency(0)
+              : formatterCurrency(5)}
           </Typography>
         </Stack>
         <Divider />
@@ -111,7 +114,7 @@ const Summary = () => {
               color: "#CC4343",
             }}
           >
-            {cartInfo.total} $
+            {formatterCurrency(cartInfo.total)}
           </Typography>
         </Stack>
         <Button

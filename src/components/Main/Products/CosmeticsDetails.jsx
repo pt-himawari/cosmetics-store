@@ -18,6 +18,7 @@ import React, { useEffect, useState, useRef } from "react";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { useNavigate, useParams } from "react-router-dom";
+import formatterCurrency from "../../common/formatterCurrency";
 import cartSlice from "../../../reducers/cartSlice";
 
 const CosmeticsDetails = () => {
@@ -307,7 +308,7 @@ const CosmeticsDetails = () => {
                     //   cosmetics.currentPrice === 0 ? "" : "line-through",
                   }}
                 >
-                  {`$${cosmetics.currentPrice}`}
+                  {`${formatterCurrency(cosmetics.currentPrice)}`}
                 </Typography>
               </Box>
 
@@ -332,26 +333,12 @@ const CosmeticsDetails = () => {
                 </Typography>
                 <Box
                   sx={{
-                    borderRadius: "4px",
-                    padding: "5px",
+                    borderRadius: "10px",
+                    py: "5px",
                     fontWeight: "bold",
                     border: "2px solid #b2c9dc",
                   }}
                 >
-                  <Button
-                    startIcon={<AddIcon />}
-                    variant="text"
-                    onClick={() => {
-                      setQuantity(quantity + 1);
-                      // dispatch(cartSlice.actions.addCart(cosmetics));
-                      // dispatch(
-                      //   cartSlice.actions.incrementQuantity(cosmetics)
-                      // );
-                    }}
-                  ></Button>
-
-                  {quantity}
-
                   <Button
                     startIcon={<RemoveIcon />}
                     variant="text"
@@ -359,12 +346,19 @@ const CosmeticsDetails = () => {
                       if (quantity > 1) {
                         setQuantity(quantity - 1);
                       }
-                      // dispatch(cartSlice.actions.addCart(cosmetics));
-                      // dispatch(
-                      //   cartSlice.actions.incrementQuantity(cosmetics)
-                      // );
                     }}
-                  ></Button>
+                  />
+                  <Typography component="span" mr={1}>
+                    {quantity}
+                  </Typography>
+
+                  <Button
+                    startIcon={<AddIcon />}
+                    variant="text"
+                    onClick={() => {
+                      setQuantity(quantity + 1);
+                    }}
+                  />
                 </Box>
               </Box>
               <Stack ml={4} mt={3} direction="row" spacing={3}>

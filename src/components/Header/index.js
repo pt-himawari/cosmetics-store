@@ -41,8 +41,8 @@ function Header() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+            component={Link}
+            href="/"
             sx={{
               ml: 2,
               display: { xs: "none", md: "flex" },

@@ -27,7 +27,7 @@ const Product = ({ product }) => {
   const dispatch = useDispatch();
 
   return (
-    <Grid item xs={6} md={4}>
+    <Grid item xs={12} md={4}>
       {/* San pham */}
       <Card
         elevation={3}
